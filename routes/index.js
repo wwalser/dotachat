@@ -1,4 +1,5 @@
 var dazzle = require("dazzle");
+var Q = require("q");
 var apiKey = process.env.STEAM_API_KEY;
 var people = {
 	wes: 11686602,
@@ -24,27 +25,29 @@ exports.index = function(request, response) {
 	}
 	//if there was a payload message, use that, otherwise look for a query parameter.
 	var accountId = getAccountFromMessage(message ? message : request.query.id);
-	getFirstMatch(accountId, function(firstMatch){
-		api.getMatchDetails(firstMatch.match_id, function(err, apiResponse){
+	getFirstMatch(accountId)
+		.get('match_id')
+		.then(getMatchDetails)
+		.then(function(matchDetails){
 			var radiant;
 			var victory;
-			for (var player in apiResponse.players) {
-				player = apiResponse.players[player];
+			for (var player in matchDetails.players) {
+				player = matchDetails.players[player];
 				if (player.account_id === accountId) {
 					radiant = player.player_slot < 100;
 				}
 			}
-			console.log(apiResponse, accountId, radiant, apiResponse.radiant_win);
-			victory = radiant === apiResponse.radiant_win;
+			console.log(matchDetails, accountId, radiant, matchDetails.radiant_win);
+			victory = radiant === matchDetails.radiant_win;
 			respondWith.message = victory ? 'Player was victorious in their most recent match.' : 'Player was defeated in their most recent match.';
 			respondWith.color = victory ? 'green' : 'red';
 			response.json(respondWith);
+		})
+		.catch(function(errorMessage){
+			respondWith.message = errorMessage;
+			respondWith.color = 'yellow';
+			response.json(respondWith);
 		});
-	}, function(errorMessage){
-		respondWith.message = errorMessage;
-		respondWith.color = 'yellow';
-		response.json(respondWith);
-	});
 };
 
 //message can contain either a userID or a user name.
@@ -61,15 +64,24 @@ function getAccountFromMessage(message) {
 function statusCheck(response) {
 	return response.status !== 1;
 }
+function getMatchDetails(matchId) {
+	var deferred = Q.defer();
+	api.getMatchDetails(matchId, function(err, apiResponse){
+		deferred.resolve(apiResponse);
+	});
+	return deferred.promise;
+}
 function getFirstMatch(accountId, next, error) {
+	var deferred = Q.defer();
 	if (!accountId) {
-		error('Account for that user could not be found.');
+		deferred.reject('Account for that user could not be found.');
 	}
 	api.getMatchHistory({account_id: accountId, matches_requested: 1}, function(err, apiResponse){
 		if (statusCheck(apiResponse)) {
-			error(apiResponse.statusDetail);
+			deferred.reject(apiResponse.statusDetail);
 		} else {
- 			next(apiResponse.matches[0]);
+ 			deferred.resolve(apiResponse.matches[0]);
 		}
 	});
+	return deferred.promise;
 }

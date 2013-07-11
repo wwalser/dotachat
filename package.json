@@ -7,7 +7,8 @@
 	"dependencies": {
 		"express": "3.3.4",
 		"dazzle": "1.0.x",
-		"ejs": "*"
+		"ejs": "*",
+		"q": "0.9.6"
 	},
 	"engines": {
 		"node": "0.10.x",
