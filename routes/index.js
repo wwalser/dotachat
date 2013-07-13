@@ -23,7 +23,7 @@ exports.index = function(request, response) {
 		"from": "DotaChat",
 		"message": '',
 		"color": "gray",
-		"message_format": "text"
+		"message_format": "html"
 	}
 	//if there was a payload message, use that, otherwise look for a query parameter.
 	var accountId = getAccountFromMessage(message ? message : request.query.id);
@@ -45,8 +45,8 @@ exports.index = function(request, response) {
 				}
 			}
 			victory = radiant === matchDetails.radiant_win;
-			respondWith.message = playerInfo.personaname;
-			respondWith.message += victory ? "'s most recent match was a victory." : "'s most recent match was a loss";
+			respondWith.message = '<img src="' + playerInfo.avatar  + '">' + playerInfo.personaname;
+			respondWith.message += victory ? "'s most recent match was a victory." : "'s most recent match was a loss.";
 			respondWith.color = victory ? 'green' : 'red';
 			response.json(respondWith);
 		})
