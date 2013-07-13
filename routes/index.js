@@ -45,7 +45,7 @@ exports.index = function(request, response) {
 				}
 			}
 			victory = radiant === matchDetails.radiant_win;
-			respondWith.message = '<img src="' + playerInfo.avatar  + '">' + playerInfo.personaname;
+			respondWith.message = '<img src="' + playerInfo.avatar  + '"> ' + playerInfo.personaname;
 			respondWith.message += victory ? "'s most recent match was a victory." : "'s most recent match was a loss.";
 			respondWith.color = victory ? 'green' : 'red';
 			response.json(respondWith);
