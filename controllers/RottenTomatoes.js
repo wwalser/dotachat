@@ -18,7 +18,7 @@ function RottenTomatoes(request, response){
 			var movie = movieSearch.movies[0];
 			var fresh = movie.ratings.critics_rating === "Certified Fresh";
 			respondWith.message = "<img src=\"" + movie.posters.thumbnail + "\"> "
-				+ "<a href=\"" + movie.links.alternate + "\">" + movie.title + "</a>"
+				+ " <a href=\"" + movie.links.alternate + "\">" + movie.title + "</a>"
 				+ " Critics: " + movie.ratings.critics_score 
 				+ ", Audience: " + movie.ratings.audience_score;
 			respondWith.color = fresh ? 'green' : 'red';
