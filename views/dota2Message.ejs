@@ -1,0 +1,4 @@
+<img src="<%= player.avatar %>"> <%= player.name %><% if (victory) { -%>
+'s most recent match was a victory.<% } else { -%>
+'s most recent match was a loss.<% } %>
+<%= player.name %> played <%= player.hero.name %> and went <%= player.kills %>/<%=player.deaths -%>
