@@ -16,7 +16,7 @@ function RottenTomatoes(request, response){
 	movieRequest
 		.then(function(movieSearch){
 			var movie = movieSearch.movies[0];
-			var fresh = movie.ratings.critics_rating.indexOf("Fresh") !== -1;
+			var fresh = movie.ratings.critics_rating && (movie.ratings.critics_rating.indexOf("Fresh") !== -1);
 			console.log(movie.ratings.critics_rating);
 			respondWith.message = "<img src=\"" + movie.posters.thumbnail + "\"> "
 				+ "&nbsp;<a href=\"" + movie.links.alternate + "\">" + movie.title + "</a>"
