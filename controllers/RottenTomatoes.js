@@ -20,7 +20,7 @@ function RottenTomatoes(request, response){
 			respondWith.message = "<img src=\"" + movie.posters.thumbnail + "\"> "
 				+ movie.title 
 				+ " Critics: " + movie.ratings.critics_score 
-				+ ", Audience: " + movie.ratings.audience_rating;
+				+ ", Audience: " + movie.ratings.audience_score;
 			respondWith.color = fresh ? 'green' : 'red';
 			response.json(respondWith);
 		})
