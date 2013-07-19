@@ -5,5 +5,7 @@ module.exports = {
 	locked: 66024048,
 	loco: 110649615,
 	dvtng: 93817355,
-	cyborg: 56575155
+	cyborg: 56575155,
+	peter: 28548020,
+	magnitovortex: 28548020
 };
