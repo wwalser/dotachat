@@ -6,6 +6,7 @@ var heroes = require("../data/heroes");
 var apiKey = process.env.STEAM_API_KEY;
 var dota2Api = new dazzle.dota(apiKey);
 var steamApi = new dazzle.steam(apiKey);
+var templateName = "dota2Message";
 var playerDetailMessage = "<br>{0} played {1} and went {2}/{3}";
 function Dota2Chat(request, response){
 	var message = request.body.payload && JSON.parse(request.body.payload).message;
@@ -43,9 +44,9 @@ function Dota2Chat(request, response){
 			}
 			templateData.victory = radiant === matchDetails.radiant_win;
 			respondWith.color = templateData.victory ? 'green' : 'red';
-			response.render('dota2Message', templateData, function(err, message){
+			response.render(templateName, templateData, function(err, message){
 				respondWith.message = message;
-				console.log(respondWith);
+				//console.log(respondWith);
 				response.json(respondWith);
 			});
 		})

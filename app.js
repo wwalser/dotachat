@@ -3,11 +3,12 @@
  * Module dependencies.
  */
 
-var express = require('express')
-  , routes = require('./routes')
-  , user = require('./routes/user')
-  , http = require('http')
-  , path = require('path');
+var express = require('express');
+var index = require('./routes');
+var user = require('./routes/user');
+var tomatoes = require('./routes/tomatoes');
+var http = require('http');
+var path = require('path');
 
 var app = express();
 
@@ -27,8 +28,10 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', routes.index);
-app.post('/', routes.index);
+app.get('/', index.index);
+app.post('/', index.index);
+app.get('/tomatoes', tomatoes)
+app.post('/tomatoes', tomatoes)
 app.get('/users', user.list);
 
 http.createServer(app).listen(app.get('port'), function(){
