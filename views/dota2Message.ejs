@@ -2,3 +2,5 @@
 's most recent match was a victory.<% } else { -%>
 's most recent match was a loss.<% } %>
 <br>Played <img src="<%= player.hero.image %>"> and went <%= player.kills %>/<%=player.deaths -%>
+<br>Items: <% player.items.forEach(function(item){ -%>
+<img src="<%= item %>"><% }); -%>

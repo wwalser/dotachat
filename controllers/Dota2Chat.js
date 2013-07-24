@@ -3,6 +3,7 @@ var BigNum = require("bignumber.js");
 var Q = require("q");
 var people = require("../data/people");
 var heroes = require("../data/heroes");
+var items = require("../data/items");
 var apiKey = process.env.STEAM_API_KEY;
 var dota2Api = new dazzle.dota(apiKey);
 var steamApi = new dazzle.steam(apiKey);
@@ -38,6 +39,7 @@ function Dota2Chat(request, response){
 				if (player.account_id === accountId) {
 					radiant = player.player_slot < 100;
 					templateData.player.hero = heroes[player.hero_id];
+					templateData.player.items = extractItems(player);
 					templateData.player.kills = player.kills;
 					templateData.player.deaths = player.deaths;
 				}
@@ -45,6 +47,7 @@ function Dota2Chat(request, response){
 			templateData.victory = radiant === matchDetails.radiant_win;
 			respondWith.color = templateData.victory ? 'green' : 'red';
 			response.render(templateName, templateData, function(err, message){
+				console.log('template rendered', err, message);
 				respondWith.message = message;
 				//console.log(respondWith);
 				response.json(respondWith);
@@ -79,6 +82,16 @@ function getAccountFromMessage(message) {
 }
 function statusCheck(response) {
 	return response.status !== 1;
+}
+function extractItems(player) {
+	var playerItems = [], item;
+	for (var i = 0; i <= 5; i++) {
+		item = +player['item_' + i];
+		if (item !== 0) {
+			playerItems.push(items[item]);
+		}
+	}
+	return playerItems;
 }
 function getMatchDetails(matchId) {
 	var deferred = Q.defer();
