@@ -44,6 +44,7 @@ function Dota2Chat(request, response){
 					templateData.player.deaths = player.deaths;
 				}
 			}
+			templateData.matchId = matchDetails.match_id;
 			templateData.victory = radiant === matchDetails.radiant_win;
 			respondWith.color = templateData.victory ? 'green' : 'red';
 			response.render(templateName, templateData, function(err, message){
