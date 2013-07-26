@@ -8,7 +8,6 @@ var apiKey = process.env.STEAM_API_KEY;
 var dota2Api = new dazzle.dota(apiKey);
 var steamApi = new dazzle.steam(apiKey);
 var templateName = "dota2Message";
-var playerDetailMessage = "<br>{0} played {1} and went {2}/{3}";
 function Dota2Chat(request, response){
 	var message = request.body.payload && JSON.parse(request.body.payload).message;
 	var respondWith = {
@@ -48,14 +47,14 @@ function Dota2Chat(request, response){
 			templateData.victory = radiant === matchDetails.radiant_win;
 			respondWith.color = templateData.victory ? 'green' : 'red';
 			response.render(templateName, templateData, function(err, message){
-				console.log('template rendered', err, message);
+				//console.log('template rendered', err, message);
 				respondWith.message = message;
 				//console.log(respondWith);
 				response.json(respondWith);
 			});
 		})
 		.catch(function(errorMessage){
-			respondWith.message = errorMessage;
+			respondWith.message = "Error on: " + message + "<br/>" + errorMessage;
 			respondWith.color = 'yellow';
 			response.json(respondWith);
 		});
