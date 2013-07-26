@@ -9,7 +9,7 @@ var dota2Api = new dazzle.dota(apiKey);
 var steamApi = new dazzle.steam(apiKey);
 var templateName = "dota2Message";
 function Dota2Chat(request, response){
-	var message = request.body.payload && JSON.parse(request.body.payload).message;
+	var message = messageParameters(request.body.payload && JSON.parse(request.body.payload).message);
 	var respondWith = {
 		"from": "DotaChat",
 		"message": '',
@@ -17,14 +17,14 @@ function Dota2Chat(request, response){
 		"message_format": "html"
 	}
 	//if there was a payload message, use that, otherwise look for a query parameter.
-	var accountId = getAccountFromMessage(message ? message : request.query.id);
+	var accountId = getAccountFromMessage(message.account ? message.account : request.query.id);
 	//convert accountId into a steamId https://developer.valvesoftware.com/wiki/SteamID
 	var steamId = (new BigNum(accountId)).plus("76561197960265728").toString();
 	var playerInfo = getPlayerInfo(steamId);
-	var firstMatchDetails = getFirstMatch(accountId)
+	var matchDetails = getNthMatch(accountId, message.offset)
 		.get('match_id')
 		.then(getMatchDetails);
-	Q.all([firstMatchDetails, playerInfo])
+	Q.all([matchDetails, playerInfo])
 		.spread(function(matchDetails, playerInfo){
 			var radiant;
 			var templateData = {
@@ -80,6 +80,16 @@ function getAccountFromMessage(message) {
 	}
 	return +account;
 }
+function messageParameters(message) {
+	var offset = message.indexOf("^");
+	if (!message || offset === -1) {
+		return {account: message};
+	}
+	return {
+		account: message.substring(0, offset),
+		offset: message.substring(offset+1)
+	}
+}
 function statusCheck(response) {
 	return response.status !== 1;
 }
@@ -100,16 +110,18 @@ function getMatchDetails(matchId) {
 	});
 	return deferred.promise;
 }
-function getFirstMatch(accountId, next, error) {
+function getNthMatch(accountId, n) {
 	var deferred = Q.defer();
+	var n = n ? +n : 0;
 	if (!accountId) {
 		deferred.reject('Account for that user could not be found.');
 	}
-	dota2Api.getMatchHistory({account_id: accountId, matches_requested: 1}, function(err, apiResponse){
+	console.log("getting match", n);
+	dota2Api.getMatchHistory({account_id: accountId, matches_requested: n+1}, function(err, apiResponse){
 		if (statusCheck(apiResponse)) {
 			deferred.reject(apiResponse.statusDetail);
 		} else {
- 			deferred.resolve(apiResponse.matches[0]);
+ 			deferred.resolve(apiResponse.matches[n]);
 		}
 	});
 	return deferred.promise;
