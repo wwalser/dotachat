@@ -9,5 +9,6 @@ module.exports = {
 	dvtng: 93817355,
 	cyborg: 56575155,
 	peter: 28548020,
-	magnitovortex: 28548020
+	magnitovortex: 28548020,
+	pants: 59330372
 };
