@@ -10,6 +10,6 @@ module.exports = {
 	cyborg: 56575155,
 	peter: 28548020,
 	magnitovortex: 28548020,
-	pants: 59330372
-        hinch: 10629820
+	pants: 59330372,
+	hinch: 10629820
 };
