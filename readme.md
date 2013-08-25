@@ -17,6 +17,7 @@ In order to develop and test new features for dotachat you'll need the following
 [heroku]: https://toolbelt.heroku.com/
 ###Workstation Setup
 Dotachat uses two [Heroku config variables][config] which must be setup in your local environment in order to run and test the application.
+
 * ROTTEN_TOMATOES_API_KEY
 * STEAM_API_KEY
 
@@ -35,6 +36,7 @@ This is the Heroku foreman application which will read the local .env variables 
 To test a Dotachat bot, create an http request directed at the local server started by foreman that's shaped like a HipChat webhook.
 
 If you have [HTTPie][httpie] installed you can use the following command to test your local server.
-http -f POST http://localhost:5000/poll?testing=stuffprivate_key=19287321 payload='{\"message\": \"buff Nukeem^2\"}'
+
+    http -f POST http://localhost:5000/ payload='{\"message\": \"buff Nukeem^2\"}'
 
 [httpie]: https://github.com/jkbr/httpie
