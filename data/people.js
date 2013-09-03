@@ -11,5 +11,7 @@ module.exports = {
 	peter: 28548020,
 	magnitovortex: 28548020,
 	pants: 59330372,
-	hinch: 10629820
+	hinch: 10629820,
+	brad: 55642764,
+	jimmy: 4156908
 };
