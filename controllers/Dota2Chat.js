@@ -42,6 +42,8 @@ function Dota2Chat(request, response){
 					templateData.player.kills = player.kills;
 					templateData.player.deaths = player.deaths;
 					templateData.player.assists = player.assists;
+					templateData.player.gpm = player.gold_per_min;
+					templateData.player.xpm = player.xp_per_min;	
 				}
 			}
 			templateData.matchId = matchDetails.match_id;
