@@ -94,7 +94,7 @@ function messageParameters(message) {
 	}
 }
 function statusCheck(response) {
-	return response.status !== 1;
+	return response && response.status !== 1;
 }
 function extractItems(player) {
 	var playerItems = [], item;
@@ -119,7 +119,7 @@ function getNthMatch(accountId, n) {
 	if (!accountId) {
 		deferred.reject('Account for that user could not be found.');
 	}
-	console.log("getting match", n);
+	console.log("getting match: ", n, " for account id: ", accountId);
 	dota2Api.getMatchHistory({account_id: accountId, matches_requested: n+1}, function(err, apiResponse){
 		if (statusCheck(apiResponse)) {
 			deferred.reject(apiResponse.statusDetail);
