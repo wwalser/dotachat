@@ -73,7 +73,13 @@ var ApiClient = function (appId, options) {
     };
 
 	$.fn.getSteamApiVersion = function(){
-		return this.params.version;
+		var version;
+		if (this.transientParams.steamApiVersion) {
+			version = this.transientParams.steamApiVersion;
+		} else {
+			version = this.params.version
+		}
+		return version;
 	}
 
     $.fn.getAppId = function () {
