@@ -1,11 +1,11 @@
 var ApiClient = require('./api-client');
-var SteamClient = new ApiClient(false, {steamApiVersion: '0002', accessor: 'response'});
+var SteamClient2 = new ApiClient(false, {steamApiVersion: '0002', accessor: 'response'});
 
 /**
  * Retrieves a list of all Dota 2 heroes
  * @details http://wiki.teamfortress.com/wiki/WebAPI/GetHeroes
  */
-SteamClient.fn.extend('getPlayerSummaries', function (playerIds, next) {
+SteamClient2.fn.extend('getPlayerSummaries', function (playerIds, next) {
 	//playerIds should be either a string, number of array of ids.
 	//if it's an array, join.
     if (typeof playerIds === 'object') {
@@ -18,4 +18,4 @@ SteamClient.fn.extend('getPlayerSummaries', function (playerIds, next) {
         .then(next);
 });
 
-module.exports = exports = SteamClient;
+module.exports = exports = SteamClient2;

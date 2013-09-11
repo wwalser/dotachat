@@ -1,12 +1,12 @@
 var dazzle = require("../external/dazzle-node");
 var BigNum = require("bignumber.js");
 var Q = require("q");
-var people = require("../data/people");
 var heroes = require("../data/heroes");
 var items = require("../data/items");
 var apiKey = process.env.STEAM_API_KEY;
 var dota2Api = new dazzle.dota(apiKey);
-var steamApi = new dazzle.steam(apiKey);
+var steamApi1 = new dazzle.steam1(apiKey);
+var steamApi2 = new dazzle.steam2(apiKey);
 var templateName = "dota2Message";
 function Dota2Chat(request, response){
 	var message = messageParameters(request.body.payload && JSON.parse(request.body.payload).message);
@@ -17,57 +17,59 @@ function Dota2Chat(request, response){
 		"message_format": "html"
 	}
 	//if there was a payload message, use that, otherwise look for a query parameter.
-	var accountId = getAccountFromMessage(message.account ? message.account : request.query.id);
-	//convert accountId into a steamId https://developer.valvesoftware.com/wiki/SteamID
-	var steamId = (new BigNum(accountId)).plus("76561197960265728").toString();
-	var playerInfo = getPlayerInfo(steamId);
-	var matchDetails = getNthMatch(accountId, message.offset)
-		.get('match_id')
-		.then(getMatchDetails);
-	Q.all([matchDetails, playerInfo])
-		.spread(function(matchDetails, playerInfo){
-			var radiant;
-			var templateData = {
-				player: {
-					name: playerInfo.personaname,
-					avatar: playerInfo.avatar
+	var username = getAccountFromMessage(message.account || request.query.id);
+	getSteamId(username).then(function (steamId) {
+		//convert steamId into accountId https://developer.valvesoftware.com/wiki/SteamID
+		var accountId = +(new BigNum(steamId)).minus("76561197960265728").toString();
+		var playerInfo = getPlayerInfo(steamId);
+		var matchDetails = getNthMatch(accountId, message.offset)
+			.get('match_id')
+			.then(getMatchDetails);
+		Q.all([matchDetails, playerInfo])
+			.spread(function(matchDetails, playerInfo){
+				var radiant;
+				var templateData = {
+					player: {
+						name: playerInfo.personaname,
+						avatar: playerInfo.avatar
+					}
+				};
+				for (var player in matchDetails.players) {
+					player = matchDetails.players[player];
+					if (player.account_id === accountId) {
+						radiant = player.player_slot < 100;
+						templateData.player.hero = heroes[player.hero_id];
+						templateData.player.items = extractItems(player);
+						templateData.player.kills = player.kills;
+						templateData.player.deaths = player.deaths;
+						templateData.player.assists = player.assists;
+						templateData.player.gpm = player.gold_per_min;
+						templateData.player.xpm = player.xp_per_min;
+					}
 				}
-			};
-			for (var player in matchDetails.players) {
-				player = matchDetails.players[player];
-				if (player.account_id === accountId) {
-					radiant = player.player_slot < 100;
-					templateData.player.hero = heroes[player.hero_id];
-					templateData.player.items = extractItems(player);
-					templateData.player.kills = player.kills;
-					templateData.player.deaths = player.deaths;
-					templateData.player.assists = player.assists;
-					templateData.player.gpm = player.gold_per_min;
-					templateData.player.xpm = player.xp_per_min;	
-				}
-			}
-			templateData.matchId = matchDetails.match_id;
-			templateData.victory = radiant === matchDetails.radiant_win;
-			respondWith.color = templateData.victory ? 'green' : 'red';
-			response.render(templateName, templateData, function(err, message){
-				//console.log('template rendered', err, message);
-				respondWith.message = message;
-				//console.log(respondWith);
+				templateData.matchId = matchDetails.match_id;
+				templateData.victory = radiant === matchDetails.radiant_win;
+				respondWith.color = templateData.victory ? 'green' : 'red';
+				response.render(templateName, templateData, function(err, message){
+					//console.log('template rendered', err, message);
+					respondWith.message = message;
+					//console.log(respondWith);
+					response.json(respondWith);
+				});
+			})
+			.catch(function(errorMessage){
+				respondWith.message = "Error on: " + message + "<br/>" + errorMessage;
+				respondWith.color = 'yellow';
 				response.json(respondWith);
 			});
-		})
-		.catch(function(errorMessage){
-			respondWith.message = "Error on: " + message + "<br/>" + errorMessage;
-			respondWith.color = 'yellow';
-			response.json(respondWith);
-		});
+	});
 }
 // Export Dota2Chat.
 module.exports = Dota2Chat;
 
 function getPlayerInfo(accountId) {
 	var deferred = Q.defer();
-	steamApi.getPlayerSummaries(accountId, function(err, apiResponse){
+	steamApi2.getPlayerSummaries(accountId, function(err, apiResponse){
 		deferred.resolve(apiResponse.players[0]);
 	});
 	return deferred.promise;
@@ -78,10 +80,7 @@ function getAccountFromMessage(message) {
 	if (account.indexOf(' ') !== -1) {
 		account = account.split(' ')[1];
 	}
-	if (!+account) {
-		account = people[account.toLowerCase()];
-	}
-	return +account;
+	return account;
 }
 function messageParameters(message) {
 	var offset = message.indexOf("^");
@@ -129,4 +128,14 @@ function getNthMatch(accountId, n) {
 	});
 	return deferred.promise;
 }
-
+function getSteamId(username) {
+	var deferred = Q.defer();
+	steamApi1.getSteamId(username, function (err, apiResponse) {
+		if (apiResponse.success === 1) {
+			deferred.resolve(apiResponse.steamid);
+		} else {
+			deferred.reject(apiResponse.message);
+		}
+	});
+	return deferred.promise;
+}
