@@ -19,7 +19,7 @@ function Dota2Chat(request, response){
 	var username = getAccountFromMessage(message.account || request.query.id);
 	getSteamId(username).then(function (steamId) {
 		//convert steamId into accountId https://developer.valvesoftware.com/wiki/SteamID
-		var accountId = +(new BigNum(steamId)).minus("76561197960265728").toString();
+		var accountId = +(new BigNum(steamId).minus("76561197960265728").toString());
 		var playerInfo = getPlayerInfo(steamId);
 		var matchDetails = getNthMatch(accountId, message.offset)
 			.get('match_id')
@@ -57,10 +57,15 @@ function Dota2Chat(request, response){
 				});
 			})
 			.catch(function(errorMessage){
-				respondWith.message = "Error on: " + message + "<br/>" + errorMessage;
+				respondWith.message = "Error on: " + username + "<br/>" + errorMessage;
 				respondWith.color = 'yellow';
 				response.json(respondWith);
 			});
+	})
+	.catch(function(errorMessage){
+		respondWith.message = "Error on: " + username + "<br/>" + errorMessage + "<br/>Are you sure that is the correct vanity URL?";
+		respondWith.color = 'yellow';
+		response.json(respondWith);
 	});
 }
 // Export Dota2Chat.
