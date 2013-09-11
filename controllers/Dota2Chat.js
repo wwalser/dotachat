@@ -5,8 +5,7 @@ var heroes = require("../data/heroes");
 var items = require("../data/items");
 var apiKey = process.env.STEAM_API_KEY;
 var dota2Api = new dazzle.dota(apiKey);
-var steamApi1 = new dazzle.steam1(apiKey);
-var steamApi2 = new dazzle.steam2(apiKey);
+var steamApi = new dazzle.steam(apiKey);
 var templateName = "dota2Message";
 function Dota2Chat(request, response){
 	var message = messageParameters(request.body.payload && JSON.parse(request.body.payload).message);
@@ -69,7 +68,7 @@ module.exports = Dota2Chat;
 
 function getPlayerInfo(accountId) {
 	var deferred = Q.defer();
-	steamApi2.getPlayerSummaries(accountId, function(err, apiResponse){
+	steamApi.getPlayerSummaries(accountId, function(err, apiResponse){
 		deferred.resolve(apiResponse.players[0]);
 	});
 	return deferred.promise;
@@ -130,7 +129,7 @@ function getNthMatch(accountId, n) {
 }
 function getSteamId(username) {
 	var deferred = Q.defer();
-	steamApi1.getSteamId(username, function (err, apiResponse) {
+	steamApi.getSteamId(username, function (err, apiResponse) {
 		if (apiResponse.success === 1) {
 			deferred.resolve(apiResponse.steamid);
 		} else {

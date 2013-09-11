@@ -18,4 +18,11 @@ SteamClient2.fn.extend('getPlayerSummaries', function (playerIds, next) {
         .then(next);
 });
 
+SteamClient2.fn.extend('getSteamId', function (username, next) {
+    this.invoke('ResolveVanityURL')
+        .using({vanityurl: username, steamApiVersion: '0001'})
+        .on('ISteamUser')
+        .then(next);
+});
+
 module.exports = exports = SteamClient2;
