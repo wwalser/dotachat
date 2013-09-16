@@ -1,6 +1,7 @@
 var dazzle = require("../external/dazzle-node");
 var BigNum = require("bignumber.js");
 var Q = require("q");
+var people = require("../data/people");
 var heroes = require("../data/heroes");
 var items = require("../data/items");
 var apiKey = process.env.STEAM_API_KEY;
@@ -16,10 +17,8 @@ function Dota2Chat(request, response){
 		"message_format": "html"
 	}
 	//if there was a payload message, use that, otherwise look for a query parameter.
-	var username = getAccountFromMessage(message.account || request.query.id);
-	getSteamId(username).then(function (steamId) {
+	getAccountFromMessage(message.account || request.query.id).spread(function (steamId, accountId){
 		//convert steamId into accountId https://developer.valvesoftware.com/wiki/SteamID
-		var accountId = +(new BigNum(steamId).minus("76561197960265728").toString());
 		var playerInfo = getPlayerInfo(steamId);
 		var matchDetails = getNthMatch(accountId, message.offset)
 			.get('match_id')
@@ -61,8 +60,7 @@ function Dota2Chat(request, response){
 				respondWith.color = 'yellow';
 				response.json(respondWith);
 			});
-	})
-	.catch(function(errorMessage){
+	}).catch(function(errorMessage){
 		respondWith.message = "Error on: " + username + "<br/>" + errorMessage + "<br/>Are you sure that is the correct vanity URL?";
 		respondWith.color = 'yellow';
 		response.json(respondWith);
@@ -84,7 +82,11 @@ function getAccountFromMessage(message) {
 	if (account.indexOf(' ') !== -1) {
 		account = account.split(' ')[1];
 	}
-	return account;
+	//did the message provide an integer? If so it's probably an accountId
+	if (!+account && people[account.toLowerCase()]) {
+		account = people[account.toLowerCase()];
+	}
+	return getIds(account);
 }
 function messageParameters(message) {
 	var offset = message.indexOf("^");
@@ -132,14 +134,28 @@ function getNthMatch(accountId, n) {
 	});
 	return deferred.promise;
 }
-function getSteamId(username) {
+/**
+ * Returns a promise for [steamId, accountId].
+ */
+function getIds(username) {
 	var deferred = Q.defer();
-	steamApi.getSteamId(username, function (err, apiResponse) {
-		if (apiResponse.success === 1) {
-			deferred.resolve(apiResponse.steamid);
-		} else {
-			deferred.reject(apiResponse.message);
-		}
-	});
+	var accountId, steamId;
+	//If we can get a number now it's probably a dotaid
+	if (+username) {
+		console.log('user found locally', username)
+		accountId = +username;
+		steamId = (new BigNum(accountId)).plus("76561197960265728").toString();
+		deferred.resolve([steamId, accountId]);
+	} else {
+		steamApi.getSteamId(username, function (err, apiResponse) {
+			if (apiResponse.success === 1) {
+				steamId = apiResponse.steamid;
+				accountId = +(new BigNum(steamId).minus("76561197960265728").toString());
+				deferred.resolve([steamId, accountId]);
+			} else {
+				deferred.reject(apiResponse.message);
+			}
+		});
+	}
 	return deferred.promise;
 }
