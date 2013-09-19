@@ -1,6 +1,6 @@
 <img src="<%= player.avatar %>"> <%= player.name %>'s <a href="http://dotabuff.com/matches/<%= matchId %>">most recent match</a> was a<% if (victory) { -%>
  victory.<% } else { -%>
  loss.<% } %>
-<br>Played <img src="<%= player.hero.image %>" alt="<%= player.hero.name %>"> and went <b><%= player.kills %>/<%=player.deaths %>/<%=player.assists %></b> with <b><%=player.gpm %></b> gpm and <b><%=player.xpm -%></b> xpm
+<br>Played <img src="<%= player.hero.image %>" title="<%= player.hero.name %>" alt="<%= player.hero.name %>"> and went <b><%= player.kills %>/<%=player.deaths %>/<%=player.assists %></b> with <b><%=player.gpm %></b> gpm and <b><%=player.xpm -%></b> xpm
 <br>Items: <% player.items.forEach(function(item){ -%>
 <img src="<%= item %>"><% }); -%>

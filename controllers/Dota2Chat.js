@@ -84,7 +84,10 @@ function getAccountFromMessage(message) {
 	}
 	//did the message provide an integer? If so it's probably an accountId
 	if (!+account && people[account.toLowerCase()]) {
+		console.log('Attempting to find in local people list: ', account);
 		account = people[account.toLowerCase()];
+	} else {
+		console.log('Account provided appears to be an integer: ', account);
 	}
 	return getIds(account);
 }
