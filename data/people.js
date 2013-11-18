@@ -14,6 +14,7 @@ module.exports = {
 	brad: 55642764,
 	jimmy: 4156908,
 	pancake: 48615033,
-	davo: 92706935
+	davo: 92706935,
+	edjz: 54067338
 };
 
