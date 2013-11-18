@@ -25,6 +25,7 @@ function Dota2Chat(request, response){
 			.then(getMatchDetails);
 		Q.all([matchDetails, playerInfo])
 			.spread(function(matchDetails, playerInfo){
+				console.log("Got match details and player info successfully.");
 				var radiant;
 				var templateData = {
 					player: {
@@ -56,11 +57,13 @@ function Dota2Chat(request, response){
 				});
 			})
 			.catch(function(errorMessage){
+				console.log("Failed to get match details or player info.", username, errorMessage);
 				respondWith.message = "Error on: " + username + "<br/>" + errorMessage;
 				respondWith.color = 'yellow';
 				response.json(respondWith);
 			});
 	}).catch(function(errorMessage){
+		console.log("Failed to get account details from message.");
 		respondWith.message = "Error on: " + username + "<br/>" + errorMessage + "<br/>Are you sure that is the correct vanity URL?";
 		respondWith.color = 'yellow';
 		response.json(respondWith);
@@ -70,6 +73,7 @@ function Dota2Chat(request, response){
 module.exports = Dota2Chat;
 
 function getPlayerInfo(accountId) {
+	console.log("getting player info for: ", accountId);
 	var deferred = Q.defer();
 	steamApi.getPlayerSummaries(accountId, function(err, apiResponse){
 		deferred.resolve(apiResponse.players[0]);
@@ -115,6 +119,7 @@ function extractItems(player) {
 	return playerItems;
 }
 function getMatchDetails(matchId) {
+	console.log("getting match details for: ", matchId);
 	var deferred = Q.defer();
 	dota2Api.getMatchDetails(matchId, function(err, apiResponse){
 		deferred.resolve(apiResponse);
@@ -145,7 +150,6 @@ function getIds(username) {
 	var accountId, steamId;
 	//If we can get a number now it's probably a dotaid
 	if (+username) {
-		console.log('user found locally', username)
 		accountId = +username;
 		steamId = (new BigNum(accountId)).plus("76561197960265728").toString();
 		deferred.resolve([steamId, accountId]);
