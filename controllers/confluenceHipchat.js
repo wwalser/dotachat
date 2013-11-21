@@ -24,5 +24,6 @@ function ConfluenceHipchat(request, response) {
 module.exports = ConfluenceHipchat;
 
 function install(request, response){
+	console.log(JSON.parse(request.body));
 	response.json({message: "success"});
 }
