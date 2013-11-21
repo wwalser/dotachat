@@ -7,6 +7,7 @@ var express = require('express');
 var index = require('./routes');
 var user = require('./routes/user');
 var tomatoes = require('./routes/tomatoes');
+var confluenceHipchat = require('./routes/confluenceHipchat');
 var http = require('http');
 var path = require('path');
 
@@ -31,6 +32,8 @@ if ('development' == app.get('env')) {
 app.get('/', index.index);
 app.post('/', index.index);
 app.get('/tomatoes', tomatoes)
+app.get('/confluenceHipchat/:method', confluenceHipchat);
+app.post('/confluenceHipchat/:method', confluenceHipchat);
 app.post('/tomatoes', tomatoes)
 app.get('/users', user.list);
 
