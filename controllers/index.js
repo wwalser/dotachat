@@ -7,5 +7,5 @@ var ConfluenceHipchat = require('./confluenceHipchat');
 module.exports = {
 	Dota2Chat: Dota2Chat,
 	RottenTomatoes: RottenTomatoes,
-	ConfluenceHipchat: Confluencehipchat
+	ConfluenceHipchat: ConfluenceHipchat
 };
