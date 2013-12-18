@@ -15,6 +15,7 @@ module.exports = {
 	jimmy: 4156908,
 	pancake: 48615033,
 	davo: 92706935,
-	edjz: 54067338
+	edjz: 54067338,
+	albert: 50083712
 };
 
