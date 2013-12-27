@@ -1,15 +1,19 @@
 var dazzle = require("../external/dazzle-node");
 var BigNum = require("bignumber.js");
+var nodeRequest = require("request");
 var Q = require("q");
+var http = require('http');
 var people = require("../data/people");
 var heroes = require("../data/heroes");
 var items = require("../data/items");
 var apiKey = process.env.STEAM_API_KEY;
+var hipchatToken = process.env.HIPCHAT_TOKEN;
 var dota2Api = new dazzle.dota(apiKey);
 var steamApi = new dazzle.steam(apiKey);
 var templateName = "dota2Message";
 function Dota2Chat(request, response){
-	var message = messageParameters(request.body.payload && JSON.parse(request.body.payload).message);
+	var message = messageParameters(request.body.item.message.message);
+	var roomId = request.body.item.room.id;
 	var respondWith = {
 		"from": "DotaChat",
 		"message": '',
@@ -54,6 +58,8 @@ function Dota2Chat(request, response){
 					respondWith.message = message;
 					//console.log(respondWith);
 					response.json(respondWith);
+					var notificationUrl = "https://www.hipchat.com/v2/room/"+ roomId + "/notification?auth_token=" + hipchatToken;
+					nodeRequest.post(notificationUrl, {json: respondWith});
 				});
 			})
 			.catch(function(errorMessage){

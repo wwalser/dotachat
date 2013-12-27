@@ -1,10 +1,14 @@
 var Q = require("q");
 var http = require('http');
+var nodeRequest = require("request");
 var apiKey = process.env.ROTTEN_TOMATOES_API_KEY;
+var hipchatToken = process.env.HIPCHAT_TOKEN;
 var templateName = "dota2Message";
 
 function RottenTomatoes(request, response){
-	var message = request.body.payload && JSON.parse(request.body.payload).message;
+	var message = request.body.item.message.message;
+	var roomId = request.body.item.room.id;
+	var notificationUrl = "https://www.hipchat.com/v2/room/"+ roomId + "/notification?auth_token=" + hipchatToken;
 	var movieName = getMovieNameFromMessage(message ? message : request.query.movie);
 	var movieRequest = searchMovies(movieName);
 	var respondWith = {
@@ -24,16 +28,19 @@ function RottenTomatoes(request, response){
 				+ ", Audience: " + movie.ratings.audience_score;
 			respondWith.color = fresh ? 'green' : 'red';
 			response.json(respondWith);
+			nodeRequest.post(notificationUrl, {json: respondWith});
 		})
 		.catch(function(error){
 			respondWith.color = "yellow"
 			if (typeof error === "string") {
 				respondWith.message = error;
 				response.json(respondWith);
+				nodeRequest.post(notificationUrl, {json: respondWith});
 			} else {
 				console.log('request rejected?', error);
 				respondWith.message = "Error gathering data.";
 				response.json(respondWith);
+				nodeRequest.post(notificationUrl, {json: respondWith});
 			}
 		});
 }
