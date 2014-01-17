@@ -4,10 +4,7 @@
  */
 
 var express = require('express');
-var index = require('./routes');
-var user = require('./routes/user');
-var tomatoes = require('./routes/tomatoes');
-var confluenceHipchat = require('./routes/confluenceHipchat');
+var routes = require('./routes');
 var http = require('http');
 var path = require('path');
 
@@ -29,13 +26,8 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', index.index);
-app.post('/', index.index);
-app.get('/tomatoes', tomatoes)
-app.get('/confluenceHipchat/:method', confluenceHipchat);
-app.post('/confluenceHipchat/:method', confluenceHipchat);
-app.post('/tomatoes', tomatoes)
-app.get('/users', user.list);
+app.get('/:controller', routes);
+app.post('/:controller', routes);
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

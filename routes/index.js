@@ -1,7 +1,12 @@
-var controllers = require('../controllers');
 /**
  * Response to hipchat messages.
  */
-exports.index = function(request, response) {
-	var dota2Chat = controllers.Dota2Chat(request, response);
+module.exports = function(request, response) {
+	var controllerName = request.params.controller.match(/[0-9a-zA-Z]*/)[0],
+		controller;
+	
+	if (controllerName.length > 0) {
+		controller = require('../controllers/' + controllerName);
+		controller(request, response);
+	}
 };
