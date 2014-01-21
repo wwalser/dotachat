@@ -17,6 +17,8 @@ module.exports = {
 	davo: 92706935,
 	edjz: 54067338,
 	albert: 50083712,
-	will: 40325418
+	will: 40325418,
+	shaun: 33939910,
+	raymond: 46943842
 };
 
