@@ -15,5 +15,5 @@ dota2Api.getHeroes({}, function(err, data){
 			image: imageLocationStart + hero.name.substring(heroNameStartLength) + imageLocationEnd
 		};
 	});
-	console.log(heroData);
+	console.log('module.exports = ' + heroData);
 });
