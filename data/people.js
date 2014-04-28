@@ -19,6 +19,7 @@ module.exports = {
 	albert: 50083712,
 	will: 40325418,
 	shaun: 33939910,
-	raymond: 46943842
+	raymond: 46943842,
+	stalker: 105408639
 };
 
