@@ -29,7 +29,6 @@ function Dota2Chat(request, response){
 			.then(getMatchDetails);
 		Q.all([matchDetails, playerInfo])
 			.spread(function(matchDetails, playerInfo){
-				console.log("Got match details and player info successfully.");
 				var radiant;
 				var templateData = {
 					player: {
@@ -54,9 +53,9 @@ function Dota2Chat(request, response){
 				templateData.victory = radiant === matchDetails.radiant_win;
 				respondWith.color = templateData.victory ? 'green' : 'red';
 				response.render(templateName, templateData, function(err, message){
-					//console.log('template rendered', err, message);
+					console.log('template rendered', err, message);
 					respondWith.message = message;
-					//console.log(respondWith);
+					console.log(respondWith);
 					response.json(respondWith);
 					var notificationUrl = "https://www.hipchat.com/v2/room/"+ roomId + "/notification?auth_token=" + hipchatToken;
 					//User roomid == "test" to test this on a local machine.
@@ -81,12 +80,15 @@ function Dota2Chat(request, response){
 // Export Dota2Chat.
 module.exports = Dota2Chat;
 
+function statusCheck(response) {
+	return response && response.status !== 1;
+}
 function getPlayerInfo(accountId) {
 	console.log("getting player info for: ", accountId);
 	var deferred = Q.defer();
 	steamApi.getPlayerSummaries(accountId, function(err, apiResponse){
-		if (statusCheck(apiResponse)) {
-			deferred.reject(apiResponse.statusDetail);
+		if (err) {
+			deferred.reject(err);
 		} else {
 			deferred.resolve(apiResponse.players[0]);
 		}
@@ -118,9 +120,6 @@ function messageParameters(message) {
 		offset: message.substring(offset+1)
 	}
 }
-function statusCheck(response) {
-	return response && response.status !== 1;
-}
 function extractItems(player) {
 	var playerItems = [], item;
 	for (var i = 0; i <= 5; i++) {
@@ -135,7 +134,11 @@ function getMatchDetails(matchId) {
 	console.log("getting match details for: ", matchId);
 	var deferred = Q.defer();
 	dota2Api.getMatchDetails(matchId, function(err, apiResponse){
-		deferred.resolve(apiResponse);
+		if (err) {
+			deferred.reject(err);
+		} else {
+			deferred.resolve(apiResponse);
+		}
 	});
 	return deferred.promise;
 }

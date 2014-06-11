@@ -51,6 +51,7 @@ module.exports = exports = {
     },
     makeRequest: function (apiClient, query, next) {
         var path = this.makePath(apiClient, query);
+		console.log(path);
 
         var req = http.get(path, function (res) {
             var data = '';
@@ -60,7 +61,11 @@ module.exports = exports = {
             });
 
             res.on('end',function () {
-                var obj = JSON.parse(data);
+				try {
+					var obj = JSON.parse(data);
+				} catch (e) {
+					next('JSON parse error.', {}, null);
+				}
                 next(null, obj, null);
             });
         });
