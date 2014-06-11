@@ -37,6 +37,6 @@ To test a Dotachat bot, create an http request directed at the local server star
 
 If you have [HTTPie][httpie] installed you can use the following command to test your local server.
 
-    http -f POST http://localhost:5000/ payload='{\"message\": \"buff Nukeem^2\"}'
+    http -v localhost:5000/dota2 item:='{"message": {"message": "dota2 Nukeem^2"}, "room": {"id": "test"}}'
 
 [httpie]: https://github.com/jkbr/httpie
