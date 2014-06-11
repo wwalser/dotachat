@@ -85,7 +85,11 @@ function getPlayerInfo(accountId) {
 	console.log("getting player info for: ", accountId);
 	var deferred = Q.defer();
 	steamApi.getPlayerSummaries(accountId, function(err, apiResponse){
-		deferred.resolve(apiResponse.players[0]);
+		if (statusCheck(apiResponse)) {
+			deferred.reject(apiResponse.statusDetail);
+		} else {
+			deferred.resolve(apiResponse.players[0]);
+		}
 	});
 	return deferred.promise;
 }
