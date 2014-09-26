@@ -4,7 +4,7 @@
  */
 var apis = require('../external/dazzle-node/dazzle');
 var dota2Api = new apis.dota("980477E4FA4890429F4E4723A6FC38BB");
-var imageLocationStart = "http://media.steampowered.com/apps/dota2/images/heroes/";
+var imageLocationStart = "http://cdn.dota2.com/apps/dota2/images/heroes/";
 var imageLocationEnd = "_sb.png"
 var heroNameStartLength = "npc_dota_hero_".length;
 var heroData = {};
@@ -15,5 +15,5 @@ dota2Api.getHeroes({}, function(err, data){
 			image: imageLocationStart + hero.name.substring(heroNameStartLength) + imageLocationEnd
 		};
 	});
-	console.log('module.exports = ' + heroData);
+	console.log('module.exports = ', heroData);
 });
