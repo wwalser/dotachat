@@ -1,6 +1,7 @@
 module.exports = {
 	wes: 11686602,
 	nukeem: 11686602,
+	wes2: 134398999,
 	ig: 7684748,
 	locked: 66024048,
 	lach: 66024048,
