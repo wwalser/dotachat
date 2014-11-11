@@ -150,7 +150,9 @@ function getNthMatch(accountId, n) {
 	}
 	console.log("getting match: ", n, " for account id: ", accountId);
 	dota2Api.getMatchHistory({account_id: accountId, matches_requested: n+1}, function(err, apiResponse){
-		if (statusCheck(apiResponse)) {
+		if (err) {
+			deferred.reject(err);
+		} else if (statusCheck(apiResponse)) {
 			deferred.reject(apiResponse.statusDetail);
 		} else {
  			deferred.resolve(apiResponse.matches[n]);
@@ -171,7 +173,9 @@ function getIds(username) {
 		deferred.resolve([steamId, accountId]);
 	} else {
 		steamApi.getSteamId(username, function (err, apiResponse) {
-			if (apiResponse.success === 1) {
+			if (err) {
+				deferred.reject(err);
+			} else if (apiResponse.success === 1) {
 				steamId = apiResponse.steamid;
 				accountId = +(new BigNum(steamId).minus("76561197960265728").toString());
 				deferred.resolve([steamId, accountId]);

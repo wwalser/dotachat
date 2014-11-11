@@ -63,10 +63,10 @@ module.exports = exports = {
             res.on('end',function () {
 				try {
 					var obj = JSON.parse(data);
+					next(null, obj, null);
 				} catch (e) {
-					next('JSON parse error.', {}, null);
+					next("Steam API is returning strange stuff, it's probably down.", {}, null);
 				}
-                next(null, obj, null);
             });
         });
 
