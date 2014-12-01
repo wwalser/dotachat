@@ -325,4 +325,7 @@ module.exports =  { '1':
      image: 'http://cdn.dota2.com/apps/dota2/images/heroes/terrorblade_sb.png' },
   '110': 
    { name: 'Phoenix',
-     image: 'http://cdn.dota2.com/apps/dota2/images/heroes/phoenix_sb.png' } }
+     image: 'http://cdn.dota2.com/apps/dota2/images/heroes/phoenix_sb.png' },
+  '111': 
+   { name: 'Oracle',
+     image: 'http://cdn.dota2.com/apps/dota2/images/heroes/oracle_sb.png' } }
