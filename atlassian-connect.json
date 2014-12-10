@@ -1,0 +1,33 @@
+{
+    "key": "quick-bots",
+    "name": "HipChat Quick Bots",
+    "description": "Some quick little bots I threw together.",
+    "vendor": {
+        "name": "Wesley Walser",
+        "url": "https://www.atlassian.com"
+    },
+    "links": {
+        "self": "{{localBaseUrl}}/atlassian-connect.json",
+        "homepage": "{{localBaseUrl}}/atlassian-connect.json"
+    },
+    "capabilities": {
+        "hipchatApiConsumer": {
+            "scopes": [
+                "send_notification"
+            ]
+        },
+        "installable": {
+            "callbackUrl": "{{localBaseUrl}}/installable",
+			"allowGloba": false
+        },
+        "configurable": {
+             "url": "{{localBaseUrl}}/config"
+        },
+        "webhook": {
+            "url": "{{localBaseUrl}}/webhook",
+            "pattern": "^dota\s.*",
+            "event": "room_message",
+            "name": "Dota2 webhook"
+        }
+    }
+}
