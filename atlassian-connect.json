@@ -18,16 +18,16 @@
         },
         "installable": {
             "callbackUrl": "{{localBaseUrl}}/installable",
-			"allowGloba": false
+			"allowGlobal": false
         },
         "configurable": {
              "url": "{{localBaseUrl}}/config"
         },
         "webhook": {
             "url": "{{localBaseUrl}}/webhook",
-            "pattern": "^dota\s.*",
+            "pattern": "^\w*\s.*",
             "event": "room_message",
-            "name": "Dota2 webhook"
+            "name": "quick bots webhook"
         }
     }
 }
