@@ -12,14 +12,14 @@ function Translations(request, response){
 	var message = request.body.item.message.message;
 	var roomId = request.body.item.room.id;
 	var notificationUrl = "https://www.hipchat.com/v2/room/"+ roomId + "/notification?auth_token=" + hipchatToken;
-  var text = getTextFromMessage(message);
-  var tokenPromise = getApiToken(clientSecret, clientId);
-  var respondWith = {
+	var text = getTextFromMessage(message);
+	var tokenPromise = getApiToken(clientSecret, clientId);
+	var respondWith = {
 		"from": "TranslationBot",
 		"message": '',
 		"color": "gray",
 		"message_format": "html"
-	}
+	};
   
   var deferredTranslation = function(token){
     translateText(text, token).then(function(result){
@@ -27,9 +27,15 @@ function Translations(request, response){
       response.json(respondWith);
       //User roomid == "test" to test this on a local machine.
       if (roomId !== "test") {
-				nodeRequest.post(notificationUrl, {json: respondWith});
-			} else {
-        console.log(result);
+		  nodeRequest.post({url: notificationUrl, json: respondWith}, function(err, response){
+			  if (err){
+				  console.log("Error communicating with the HipChat API. ", err);
+			  } else {
+				  console.log(response.statusCode + " received from HipChat notification URL.");
+			  }
+		  });
+	  } else {
+          console.log(result);
       }
     });
   }
