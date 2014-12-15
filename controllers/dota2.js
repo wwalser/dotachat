@@ -60,7 +60,13 @@ function Dota2Chat(request, response){
 					var notificationUrl = "https://www.hipchat.com/v2/room/"+ roomId + "/notification?auth_token=" + hipchatToken;
 					//User roomid == "test" to test this on a local machine.
 					if (roomId !== "test") {
-						nodeRequest.post(notificationUrl, {json: respondWith});
+						nodeRequest.post({url: notificationUrl, json: respondWith}, function(err, response, body){
+							if (err) {
+								console.log("Error when sending notification to HipChat. ", err);
+							} else {
+								console.log(response.statusCode + " from HipChat.");
+							}
+						});
 					}
 				});
 			})
