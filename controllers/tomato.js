@@ -30,7 +30,13 @@ function RottenTomatoes(request, response){
 			response.json(respondWith);
 			//User roomid == "test" to test this on a local machine.
 			if (roomId !== "test") {
-				nodeRequest.post(notificationUrl, {json: respondWith});
+				nodeRequest.post({url: notificationUrl, json: respondWith}, function(err, response){
+					if (err){
+						console.log("Error communicating with the HipChat API. ", err);
+					} else {
+						console.log(response.statusCode + " received from HipChat notification URL.");
+					}
+				});
 			}
 		})
 		.catch(function(error){
