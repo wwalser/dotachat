@@ -46,6 +46,7 @@ module.exports = function (app, addon) {
             bots.getAllBots().then(function(allBots) {
                 var deferred = q.defer();
                 var message = bots.tokenizeMessage(req.context.item.message.message);
+                console.log('message: ', message);
                 var botToUse = _.find(allBots, function(bot){
                     return bot.keyword === message.keyword;
                 });
