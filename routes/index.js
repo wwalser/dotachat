@@ -47,10 +47,11 @@ module.exports = function (app, addon) {
                 var deferred = q.defer();
                 var message = bots.tokenizeMessage(req.context.item.message.message);
                 var botToUse = _.find(allBots, function(bot){
+                    console.log("bot: ", bot);
                     return bot.keyword === message.keyword;
                 });
                 if (!botToUse) {
-                    console.log('Message: ', message, 'Had to representative bot to use.')
+                    console.log('Message: ', message, 'Had no representative bot to use.')
                     return;
                 }
                 console.log('Using bot: ', botToUse);
