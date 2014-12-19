@@ -1,4 +1,5 @@
 var http = require('request');
+var _ = require('lodash');
 
 module.exports = function (app, addon) {
   var hipchat = require('../lib/hipchat')(addon);
@@ -37,16 +38,43 @@ module.exports = function (app, addon) {
     }
   );
 
-  // This is an example route to handle an incoming webhook
-  app.post('/webhook',
-    addon.authenticate(),
-    function(req, res) {
-      hipchat.sendMessage(req.clientInfo, req.context.item.room.id, 'pong')
-        .then(function(data){
-          res.send(200);
-        });
-    }
-  );
+    // This is an example route to handle an incoming webhook
+    app.post('/webhook',
+        addon.authenticate(),
+        function(req, res) {
+            bots.getAllBots().then(function(allBots) {
+                var deferred = Q.defer();
+                var message = bots.tokenizeMessage(req.context.item.message.message);
+                var botToUse = _.find(allBots, function(bot){
+                    return bot.keyword === message.keyword;
+                });
+                console.log('Using bot: ', botToUse);
+                http.post({
+                    url: botToUse.url,
+                    json: message,
+                    timeout: 10000
+                }, function(err, responseObj, body){
+                    if (err) {
+                        Q.reject(err);
+                    } else {
+                        Q.resolve(body);
+                    }
+                });
+                return deferred.promise;
+            }).then(function(body){
+                hipchat.sendMessage(req.clientInfo, req.context.item.room.id, body)
+                    .then(function(data){
+                        res.send(200);
+                    });
+            }, function(err){
+                console.log(err);
+                hipchat.sendMessage(req.clientInfo, req.context.item.room.id, 'Built that other bot yet?')
+                    .then(function(data){
+                        res.send(200);
+                    });
+            });
+        }
+    );
 
   // Notify the room that the add-on was installed
   addon.on('installed', function(clientKey, clientInfo, req){
