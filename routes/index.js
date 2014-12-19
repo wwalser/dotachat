@@ -2,6 +2,7 @@ var http = require('request');
 
 module.exports = function (app, addon) {
   var hipchat = require('../lib/hipchat')(addon);
+  var bots = require('../lib/bots')(addon.settings.client);
 
   // Root route. This route will serve the `addon.json` unless a homepage URL is
   // specified in `addon.json`.
