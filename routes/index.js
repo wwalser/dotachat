@@ -1,5 +1,6 @@
 var http = require('request');
 var _ = require('lodash');
+var q = require('q');
 
 module.exports = function (app, addon) {
   var hipchat = require('../lib/hipchat')(addon);
@@ -43,7 +44,7 @@ module.exports = function (app, addon) {
         addon.authenticate(),
         function(req, res) {
             bots.getAllBots().then(function(allBots) {
-                var deferred = Q.defer();
+                var deferred = q.defer();
                 var message = bots.tokenizeMessage(req.context.item.message.message);
                 var botToUse = _.find(allBots, function(bot){
                     return bot.keyword === message.keyword;
@@ -55,9 +56,9 @@ module.exports = function (app, addon) {
                     timeout: 10000
                 }, function(err, responseObj, body){
                     if (err) {
-                        Q.reject(err);
+                        deferred.reject(err);
                     } else {
-                        Q.resolve(body);
+                        deferred.resolve(body);
                     }
                 });
                 return deferred.promise;
