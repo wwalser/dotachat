@@ -74,13 +74,13 @@ function Dota2Chat(request, response){
 				console.log("Failed to get match details or player info.", username, errorMessage);
 				respondWith.message = "Error on: " + username + "<br/>" + errorMessage;
 				respondWith.color = 'yellow';
-				response.json(respondWith);
+				return respondWith;
 			});
 	}).catch(function(errorMessage){
 		console.log("Failed to get account details from message.");
 		respondWith.message = "Error on: " + username + "<br/>" + errorMessage + "<br/>Are you sure that is the correct vanity URL?";
 		respondWith.color = 'yellow';
-		response.json(respondWith);
+		return respondWith;
 	});
 }
 // Export Dota2Chat.

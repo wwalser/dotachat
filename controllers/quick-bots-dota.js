@@ -5,7 +5,11 @@ module.exports = function(request, response) {
     var templateRenderer = Q.nbind(response.render, response);
     var message = request.body.full;
 
-    dota2(message, templateRenderer).then(function(response){
-        response.json(response);
+    dota2(message, templateRenderer).then(function(messageObject){
+        try {
+            response.json(messageObject);
+        } catch (e) {
+            console.log('uh oh', e);
+        }
     });
 };
