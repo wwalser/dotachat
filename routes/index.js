@@ -69,6 +69,7 @@ module.exports = function (app, addon) {
                 });
                 return deferred.promise;
             }).then(function(body){
+                console.log('body: ', body);
                 hipchat.sendMessage(req.clientInfo, req.context.item.room.id, body.message, body);
             }, function(err){
                 console.log(err);
