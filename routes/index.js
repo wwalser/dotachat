@@ -43,6 +43,7 @@ module.exports = function (app, addon) {
     app.post('/webhook',
         addon.authenticate(),
         function(req, res) {
+            res.send(200);
             bots.getAllBots().then(function(allBots) {
                 var deferred = q.defer();
                 var message = bots.tokenizeMessage(req.context.item.message.message);
@@ -68,16 +69,10 @@ module.exports = function (app, addon) {
                 });
                 return deferred.promise;
             }).then(function(body){
-                hipchat.sendMessage(req.clientInfo, req.context.item.room.id, body.message, body)
-                    .then(function(data){
-                        res.send(200);
-                    });
+                hipchat.sendMessage(req.clientInfo, req.context.item.room.id, body.message, body);
             }, function(err){
                 console.log(err);
-                hipchat.sendMessage(req.clientInfo, req.context.item.room.id, 'Built that other bot yet?')
-                    .then(function(data){
-                        res.send(200);
-                    });
+                hipchat.sendMessage(req.clientInfo, req.context.item.room.id, 'Built that other bot yet?');
             });
         }
     );
