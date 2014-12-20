@@ -24,6 +24,7 @@ ac.store.register('redis', require('atlassian-connect-express-redis'));
 var staticDir = path.join(__dirname, 'public');
 // Anything in ./views are HBS templates
 var viewsDir = __dirname + '/views';
+var layoutsDir = __dirname + '/views/layouts';
 // Your routes live here; this is the C in MVC
 var routes = require('./routes');
 // Bootstrap Express
@@ -42,7 +43,10 @@ var hipchat = require('atlassian-connect-express-hipchat')(addon, app);
 app.set('port', port);
 
 // Configure the Handlebars view engine
-app.engine('hbs', hbs.express3({partialsDir: viewsDir}));
+app.engine('hbs', hbs.express3({
+    partialsDir: viewsDir,
+    layoutsDir: layoutsDir
+}));
 app.set('view engine', 'hbs');
 app.set('views', viewsDir);
 

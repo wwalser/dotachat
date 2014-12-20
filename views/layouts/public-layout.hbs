@@ -1,0 +1,26 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="ap-local-base-url" content="{{localBaseUrl}}">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="{{hostStylesheetUrl}}"></head>
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/aui/5.4.3/aui/css/aui.css" media="all">
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/aui/5.4.3/aui/css/aui-experimental.css" media="all">
+<!--[if lt IE 9]><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/aui/5.4.3/aui/css/aui-ie.css" media="all"><![endif]-->
+<!--[if IE 9]><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/aui/5.4.3/aui/css/aui-ie9.css" media="all"><![endif]-->
+<link rel="stylesheet" href="{{furl '/css/addon.css'}}" type="text/css" />
+<body class="aui-layout aui-theme-default aui-page-fixed bots">
+    {{{body}}}
+    <footer id="footer" role="contentinfo">
+        <section class="footer-body">
+            <div id="footer-logo"><a href="http://www.atlassian.com/" target="_blank">Atlassian</a></div>
+        </section>
+    </footer>
+{{! <script src="//cdnjs.cloudflare.com/ajax/libs/aui/5.4.3/aui/js/aui.js"></script> }}
+{{! <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/aui/5.4.3/aui/js/aui-ie.js"></script><![endif]--> }}
+<script src="{{hostScriptUrl}}"></script>
+<script src="{{furl '/js/public.js'}}"></script>
+</body>
+</html>

@@ -13,3 +13,80 @@
   padding: 20px 40px 20px 0;
   height: 100px;
 }
+
+#content .aui-page-panel {
+    border: none;
+    margin-bottom: 90px;
+}
+
+.aui-page-panel-inner {
+    border-top: 1px solid #ccc;
+}
+
+h1.hero {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 60px;
+    line-height: 64px;
+    letter-spacing: -1px;
+    text-align: center;
+    color: #205081;
+}
+
+#content .aui-page-header-main p {
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.call-to-action {
+    text-align: center;
+    padding-bottom: 30px;
+}
+
+.aui-page-header-main .call-to-action .aui-button {
+    color: #FFF;
+    font-family: "Helvetica Neue",Helvetica,arial,sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    height: 100%;
+    line-height: 44px;
+    padding: 0px 14px;
+}
+
+.bots {
+    background: #fff;
+}
+
+.bots-logo {
+    background-image: url("https://design.atlassian.com/2.1/images/brand/logo-22.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    height: 100px;
+    width: 250px;
+}
+.aui-header {
+    background: none repeat scroll 0% 0% #fff;
+    padding-top: 35px;
+    padding-bottom: 15px;
+    border-bottom: medium none;
+    color: #3572B0;
+}
+
+.adg-section-image {
+    margin: 0px auto 20px;
+    display: block;
+}
+
+#footer {
+    background: none repeat scroll 0% 0% #F5F5F5;
+    height: 80px;
+}
+
+#footer .footer-body {
+    min-height: 0px;
+    padding: 0px;
+}
+
+#footer-logo {
+    bottom: 0px;
+    margin-top: 27px;
+}
