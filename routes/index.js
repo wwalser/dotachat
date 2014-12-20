@@ -26,7 +26,7 @@ module.exports = function (app, addon) {
   );
 
     app.get('/index',function(req, res){
-        res.render('index');
+        res.render('index', {title: 'Quick Bots'});
     });
 
   // This is an example route that's used by the default for the configuration page
