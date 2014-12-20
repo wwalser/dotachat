@@ -51,7 +51,7 @@ module.exports = function (app, addon) {
                     return bot.keyword === message.keyword;
                 });
                 if (!botToUse) {
-                    console.log('Message: ', message, 'Had no representative bot to use.')
+                    console.log('Message: ', message, 'Had no representative bot to use.');
                     return;
                 }
                 console.log('Using bot: ', botToUse);
@@ -68,7 +68,7 @@ module.exports = function (app, addon) {
                 });
                 return deferred.promise;
             }).then(function(body){
-                hipchat.sendMessage(req.clientInfo, req.context.item.room.id, body)
+                hipchat.sendMessage(req.clientInfo, req.context.item.room.id, body.message, body)
                     .then(function(data){
                         res.send(200);
                     });
