@@ -70,7 +70,7 @@ module.exports = function (app, addon) {
                 return deferred.promise;
             }).then(function(body){
                 console.log('body: ', body);
-                hipchat.sendMessage(req.clientInfo, req.context.item.room.id, body.message, body);
+                hipchat.sendMessage(req.clientInfo, req.context.item.room.id, body.message, {options: body});
             }, function(err){
                 console.log(err);
                 hipchat.sendMessage(req.clientInfo, req.context.item.room.id, 'Built that other bot yet?');
