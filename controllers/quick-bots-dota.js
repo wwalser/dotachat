@@ -1,3 +1,11 @@
+var Q = require('q');
+var dota2 = require('../lib/dota2');
+
 module.exports = function(request, response) {
-	response.send("Like <strong>omg</strong>, how you work so good?");
-}
+    var templateRenderer = Q.nbind(response.render, response);
+    var message = request.body.full;
+
+    dota2(message, templateRenderer).then(function(response){
+        response.json(response);
+    });
+};
