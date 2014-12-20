@@ -29,6 +29,13 @@ module.exports = function (app, addon) {
         res.render('index', {title: 'Quick Bots'});
     });
 
+    app.get('/build', function(req, res){
+        res.render('build', {
+            title: "Build - Quick Bot",
+            buildSelected: true
+        })
+    });
+
   // This is an example route that's used by the default for the configuration page
   app.get('/config',
     // Authenticates the request using the JWT token in the request

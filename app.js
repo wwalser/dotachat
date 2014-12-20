@@ -25,6 +25,7 @@ var staticDir = path.join(__dirname, 'public');
 // Anything in ./views are HBS templates
 var viewsDir = __dirname + '/views';
 var layoutsDir = __dirname + '/views/layouts';
+var partialsDir = __dirname + '/views/partials';
 // Your routes live here; this is the C in MVC
 var routes = require('./routes');
 // Bootstrap Express
@@ -44,7 +45,7 @@ app.set('port', port);
 
 // Configure the Handlebars view engine
 app.engine('hbs', hbs.express3({
-    partialsDir: viewsDir,
+    partialsDir: partialsDir,
     layoutsDir: layoutsDir
 }));
 app.set('view engine', 'hbs');
