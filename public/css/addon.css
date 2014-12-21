@@ -69,19 +69,26 @@ h1.hero {
     background: #fff;
 }
 
-.bots-logo {
-    background-image: url("https://design.atlassian.com/2.1/images/brand/logo-22.png");
-    background-size: 100%;
-    background-repeat: no-repeat;
-    height: 100px;
-    width: 250px;
-}
 .aui-header {
     background: none repeat scroll 0% 0% #fff;
     padding-top: 35px;
     padding-bottom: 15px;
     border-bottom: medium none;
     color: #3572B0;
+}
+#header .header-anchor {
+    height: 100%;
+    width: 100%;
+}
+#header .header-anchor:hover, #header .header-anchor:active, #header .header-anchor:focus {
+    background-color: transparent;
+}
+.bots-logo {
+    background-image: url("https://design.atlassian.com/2.1/images/brand/logo-22.png");
+    background-size: 100%;
+    background-repeat: no-repeat;
+    height: 100px;
+    width: 250px;
 }
 
 .adg-section-image {
