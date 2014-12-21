@@ -16,9 +16,13 @@
 
 /* public styles */
 h1, h2, h3, h4 {
-    color: #205081;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
+
+h1, h2 {
+    color: #205081;
+}
+
 #content .aui-page-panel {
     border: none;
     margin-bottom: 90px;

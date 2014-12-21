@@ -30,9 +30,27 @@ module.exports = function (app, addon) {
     });
 
     app.get('/build', function(req, res){
+        var message;
+        if (req.query.message) {
+            message = {
+                type: req.query.type,
+                message: req.query.message,
+                title: req.query.type === 'error' ? 'Failure' : 'Success'
+            }
+        }
         res.render('build', {
             title: "Build - Quick Bot",
-            buildSelected: true
+            buildSelected: true,
+            message: message
+        })
+    });
+
+    app.post('/addBot', function(req, res){
+        bots.addBot(req.body).then(function(){
+            res.redirect('/build?type=success&message=Bot successfully created.');
+        }, function(err){
+            res.redirect('/build?type=error&message=' + err);
+            console.log(err);
         })
     });
 

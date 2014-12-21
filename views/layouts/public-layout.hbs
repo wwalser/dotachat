@@ -4,22 +4,28 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>{{title}}</title>
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/aui/5.4.3/aui/css/aui.css" media="all">
-<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/aui/5.4.3/aui/css/aui-experimental.css" media="all">
-<!--[if lt IE 9]><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/aui/5.4.3/aui/css/aui-ie.css" media="all"><![endif]-->
-<!--[if IE 9]><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/aui/5.4.3/aui/css/aui-ie9.css" media="all"><![endif]-->
-<link rel="stylesheet" href="{{furl '/css/addon.css'}}" type="text/css" />
+    <link rel="stylesheet" href="//aui-cdn.atlassian.com/aui-adg/5.8.0/css/aui.css" media="all">
+    <link rel="stylesheet" href="//aui-cdn.atlassian.com/aui-adg/5.8.0/css/aui-experimental.css" media="all">
+    <link rel="stylesheet" href="{{furl '/css/addon.css'}}" type="text/css" />
 </head>
 <body class="aui-layout aui-theme-default aui-page-fixed bots">
+
     {{{body}}}
+
     <footer id="footer" role="contentinfo">
         <section class="footer-body">
             <div id="footer-logo"><a href="http://www.atlassian.com/" target="_blank">Atlassian</a></div>
         </section>
     </footer>
-{{! <script src="//cdnjs.cloudflare.com/ajax/libs/aui/5.4.3/aui/js/aui.js"></script> }}
-{{! <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/aui/5.4.3/aui/js/aui-ie.js"></script><![endif]--> }}
-<script src="{{hostScriptUrl}}"></script>
-<script src="{{furl '/js/public.js'}}"></script>
+
+    <!-- AUI commented out but here in case I need it...
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="//aui-cdn.atlassian.com/aui-adg/5.8.0/js/aui.js"></script>
+    <!-- experimental components
+    <script src="//cdn.rawgit.com/jrburke/almond/0.3.0/almond.js"></script>
+    <script src="//aui-cdn.atlassian.com/aui-adg/5.8.0/js/aui-experimental.js"></script>
+    -->
+    <!-- public.js -->
+    <script src="{{furl '/js/public.js'}}"></script>
 </body>
 </html>

@@ -6,7 +6,43 @@
         <div class="aui-page-panel-inner">
             {{> sidebar}}
             <section class="aui-page-panel-content">
-                <h1>Content!</h1>
+                <h1>Add a bot</h1>
+                {{#if message}}<div class="aui-message aui-message-{{message.type}}">
+                    <p class="title">
+                        <strong>{{message.title}}</strong>
+                    </p>
+                    <p>{{message.message}}</p>
+                </div>{{/if}}
+                <form action="/addBot" method="POST" id="add-bot-form" class="aui">
+                    <fieldset>
+                        <div class="field-group">
+                            <label for="name">Name:</label>
+                            <input class="text" type="text" id="name" name="name">
+                            <div class="description">Name of the bot</div>
+                        </div>
+                        <div class="field-group">
+                            <label for="url">Url: </label>
+                            <input class="text" type="url" id="url" name="url">
+                            <div class="description">The URL to use when keyword is detected.</div>
+                        </div>
+                        <div class="field-group">
+                            <label for="keyword">Keyword: </label>
+                            <input class="text" type="text" id="keyword" name="keyword">
+                            <div class="description">The keyword that you bot will respond to.</div>
+                        </div>
+                        <div class="field-group">
+                            <label for="homepage">Homepage: </label>
+                            <input class="text" type="url" id="homepage" name="homepage">
+                            <div class="description">The homepage of this bot. Company website or open source repository.</div>
+                        </div>
+                    </fieldset>
+                    <div class="buttons-container">
+                        <div class="buttons">
+                            <input class="button submit" value="Save" id="save" type="submit">
+                            <a class="cancel" href="/build">Cancel</a>
+                        </div>
+                    </div>
+                </form>
             </section>
         </div>
     </div>
