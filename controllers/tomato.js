@@ -3,7 +3,6 @@ var http = require('http');
 var nodeRequest = require("request");
 var apiKey = process.env.ROTTEN_TOMATOES_API_KEY;
 var hipchatToken = process.env.HIPCHAT_TOKEN;
-var templateName = "dota2Message";
 
 function RottenTomatoes(request, response){
 	var message = request.body.item.message.message;
@@ -16,7 +15,7 @@ function RottenTomatoes(request, response){
 		"message": '',
 		"color": "gray",
 		"message_format": "html"
-	}
+	};
 	movieRequest
 		.then(function(movieSearch){
 			var movie = movieSearch.movies[0];
