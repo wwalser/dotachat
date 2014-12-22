@@ -88,7 +88,7 @@ module.exports = function (app, addon) {
                 http.post({
                     url: botToUse.url,
                     json: message,
-                    timeout: 10000
+                    timeout: 20000
                 }, function(err, responseObj, body){
                     if (err) {
                         deferred.reject(err);
