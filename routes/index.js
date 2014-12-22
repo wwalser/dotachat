@@ -105,7 +105,7 @@ module.exports = function (app, addon) {
             }, function(err){
                 console.log(err);
                 if (err.code) {
-                    hipchat.sendMessage(req.clientInfo, req.context.item.room.id, 'Probably Steam Web API trouble: ' + err.code.toString());
+                    hipchat.sendMessage(req.clientInfo, req.context.item.room.id, err.code.toString());
                 } else {
                     hipchat.sendMessage(req.clientInfo, req.context.item.room.id, 'DB or unknown trouble.');
                 }
