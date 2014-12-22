@@ -77,7 +77,6 @@ module.exports = function (app, addon) {
                 var deferred = q.defer();
                 var message = bots.tokenizeMessage(req.context.item.message.message);
                 var botToUse = _.find(allBots, function(bot){
-                    console.log("bot: ", bot);
                     return bot.keyword === message.keyword;
                 });
                 if (!botToUse) {
@@ -91,6 +90,9 @@ module.exports = function (app, addon) {
                     timeout: 20000
                 }, function(err, responseObj, body){
                     if (err) {
+                        if (err.code) {
+                            console.log("Request error: ", err.code.toString());
+                        }
                         deferred.reject(err);
                     } else {
                         deferred.resolve(body);
@@ -102,7 +104,11 @@ module.exports = function (app, addon) {
                 hipchat.sendMessage(req.clientInfo, req.context.item.room.id, body.message, {options: body});
             }, function(err){
                 console.log(err);
-                hipchat.sendMessage(req.clientInfo, req.context.item.room.id, 'Built that other bot yet?');
+                if (err.code) {
+                    hipchat.sendMessage(req.clientInfo, req.context.item.room.id, 'Probably Steam Web API trouble: ' + err.code.toString());
+                } else {
+                    hipchat.sendMessage(req.clientInfo, req.context.item.room.id, 'DB or unknown trouble.');
+                }
             });
         }
     );
