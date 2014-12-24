@@ -77,6 +77,7 @@ module.exports = function (app, addon) {
                 var deferred = q.defer();
                 var message = bots.tokenizeMessage(req.context.item.message.message);
                 var botToUse = _.find(allBots, function(bot){
+                    console.log(bot);
                     return bot.keyword === message.keyword;
                 });
                 if (!botToUse) {
