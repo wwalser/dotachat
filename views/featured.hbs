@@ -1,0 +1,40 @@
+{{!< public-layout}}
+
+{{> header}}
+<section id="content" role="main" class="ac-content">
+    <div class="aui-page-panel">
+        <div class="aui-page-panel-inner">
+            {{> sidebar}}
+            <section class="aui-page-panel-content">
+                <h1>Featured Bots</h1>
+                <div class="aui-group featured-container">
+                    <div class="aui-item featured-image">
+                        <img src="{{furl '/images/tomato-bot.png'}}">
+                    </div>
+                    <div class="aui-item">
+                        <h2>Tomato Bot</h2>
+                        <p>Get content from Rotten Tomatoes web api to see the current critics rating for a movie.</p>
+                    </div>
+                </div>
+                <div class="aui-group featured-container">
+                    <div class="aui-item featured-image">
+                        <img src="{{furl '/images/dota-bot.png'}}">
+                    </div>
+                    <div class="aui-item">
+                        <h2>Dota Bot</h2>
+                        <p>Get information about a players recent Dota 2 matches. Kappa</p>
+                    </div>
+                </div>
+                <div class="aui-group featured-container">
+                    <div class="aui-item featured-image">
+                        <img src="{{furl '/images/vn-bot.png'}}">
+                    </div>
+                    <div class="aui-item">
+                        <h2>VN Bot</h2>
+                        <p>Translates text from english to Vietnamese.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</section>

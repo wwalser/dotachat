@@ -29,6 +29,10 @@ module.exports = function (app, addon) {
         res.render('index', {title: 'Quick Bots'});
     });
 
+    app.get('/featured',function(req, res){
+        res.render('featured', {title: 'Featured - Quick Bots'});
+    });
+
     app.get('/build', function(req, res){
         var message;
         if (req.query.message) {

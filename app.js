@@ -52,7 +52,6 @@ app.set('view engine', 'hbs');
 app.set('views', viewsDir);
 
 // Declare any Express [middleware](http://expressjs.com/api.html#middleware) you'd like to use here
-console.log(express.favicon.toString());
 app.use(express.favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 // Log requests, using an appropriate formatter by env
 app.use(express.logger(devEnv ? 'dev' : 'default'));
