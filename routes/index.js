@@ -30,7 +30,10 @@ module.exports = function (app, addon) {
     });
 
     app.get('/featured',function(req, res){
-        res.render('featured', {title: 'Featured - Quick Bots'});
+        res.render('featured', {
+            title: 'Featured - Quick Bots',
+            featuredSelected: true
+        });
     });
 
     app.get('/build', function(req, res){
