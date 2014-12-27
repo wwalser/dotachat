@@ -4,7 +4,7 @@ var q = require('q');
 
 module.exports = function (app, addon) {
   var hipchat = require('../lib/hipchat')(addon);
-  var bots = require('../lib/bots')(addon.settings.client);
+  var bots = require('../lib/bots')(addon);
 
   // Root route. This route will serve the `addon.json` unless a homepage URL is
   // specified in `addon.json`.
@@ -59,6 +59,27 @@ module.exports = function (app, addon) {
             res.redirect('/build?type=error&message=' + err);
             console.log(err);
         })
+    });
+
+    app.get('/bot', function(req, res){
+        var getBot;
+
+        if (req.query.bot) {
+            getBot = bots.getBotFromSecret(req.query.bot);
+        } else {
+            getBot = Q.reject('Failed to retrieve bot.');
+        }
+
+        getBot.then(function(bot){
+            res.render('edit', {
+                title: 'Edit - Quick Bot',
+                buildSelected: true,
+                bot: bot
+            });
+        }, function(err){
+            res.redirect('/build?type=error&message=' + err);
+            console.log(err);
+        });
     });
 
   // This is an example route that's used by the default for the configuration page

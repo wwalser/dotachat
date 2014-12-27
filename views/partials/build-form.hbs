@@ -1,0 +1,36 @@
+<form action="/addBot" method="POST" id="add-bot-form" class="aui">
+    <fieldset>
+        <div class="field-group">
+            <label for="name">Name:</label>
+            <input class="text" type="text" id="name" name="name" {{#if bot.name}}value="{{bot.name}}"{{/if}}>
+            <div class="description">Name of the bot</div>
+        </div>
+        <div class="field-group">
+            <label for="url">URL:</label>
+            <input class="text" type="url" id="url" name="url" {{#if bot.url}}value="{{bot.url}}"{{/if}}>
+            <div class="description">The URL to use when keyword is detected.</div>
+        </div>
+        <div class="field-group">
+            <label for="keyword">Keyword:</label>
+            <input class="text" type="text" id="keyword" name="keyword" {{#if bot.keyword}}value="{{bot.keyword}}"{{/if}}>
+            <div class="description">The keyword that you bot will respond to.</div>
+        </div>
+        <div class="field-group">
+            <label for="homepage">Homepage:</label>
+            <input class="text" type="url" id="homepage" name="homepage" {{#if bot.homepage}}value="{{bot.homepage}}"{{/if}}>
+            <div class="description">The homepage of this bot. Company website or open source repository.</div>
+        </div>
+        <div class="field-group">
+            <label for="email">Email Address:</label>
+            <input class="text" type="email" id="email" name="email" {{#if bot.email}}value="{{bot.email}}"{{/if}}>
+            <div class="description">A unique URL will be sent to this email address in order to configure this bot in the future.</div>
+        </div>
+        {{#if bot.secret}}<input type="hidden" id="secret" name="secret" value="{{bot.secret}}" />{{/if}}
+    </fieldset>
+    <div class="buttons-container">
+        <div class="buttons">
+            <input class="button submit" value="Save" id="save" type="submit">
+            <a class="cancel" href="/build">Cancel</a>
+        </div>
+    </div>
+</form>

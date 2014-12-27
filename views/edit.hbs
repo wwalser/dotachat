@@ -6,18 +6,13 @@
         <div class="aui-page-panel-inner">
             {{> sidebar}}
             <section class="aui-page-panel-content">
-                <h1>Add a bot</h1>
+                <h1>Edit configuration</h1>
                 {{#if message}}<div class="aui-message aui-message-{{message.type}}">
                     <p class="title">
                         <strong>{{message.title}}</strong>
                     </p>
                     <p>{{message.message}}</p>
                 </div>{{/if}}
-                <div class="aui-group" class="docs-container">
-                    <div class="aui-item">
-                        <p>Testing things.</p>
-                    </div>
-                </div>
                 {{> build-form}}
             </section>
         </div>
