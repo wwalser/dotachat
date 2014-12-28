@@ -1,6 +1,7 @@
 var http = require('request');
 var _ = require('lodash');
 var q = require('q');
+var messages = require('../lib/messages');
 
 module.exports = function (app, addon) {
   var hipchat = require('../lib/hipchat')(addon);
@@ -37,14 +38,7 @@ module.exports = function (app, addon) {
     });
 
     app.get('/build', function(req, res){
-        var message;
-        if (req.query.message) {
-            message = {
-                type: req.query.type,
-                message: req.query.message,
-                title: req.query.type === 'error' ? 'Failure' : 'Success'
-            }
-        }
+        var message = messages(req);
         res.render('build', {
             title: "Build - Quick Bot",
             buildSelected: true,
@@ -53,16 +47,30 @@ module.exports = function (app, addon) {
     });
 
     app.post('/addBot', function(req, res){
-        bots.addBot(req.body).then(function(){
-            res.redirect('/build?type=success&message=Bot successfully created.');
+        bots.addBot(req.body).then(function(bot){
+            var botQuery = '?bot=' + bot.secret;
+            var message = "&type=success&message=Bot successfully created.";
+            res.redirect('/bot' + botQuery + message);
         }, function(err){
             res.redirect('/build?type=error&message=' + err);
             console.log(err);
         })
     });
 
+    app.post('/editBot', function(req, res){
+        bots.editBot(req.body).then(function(bot){
+            var botQuery = '?bot=' + bot.secret;
+            var message = "&type=success&message=Bot successfully edited.";
+            res.redirect('/bot' + botQuery + message);
+        }, function(err){
+            res.redirect('/build?type=error&message=' + err);
+            console.log(err);
+        });
+    });
+
     app.get('/bot', function(req, res){
         var getBot;
+        var message = messages(req);
 
         if (req.query.bot) {
             getBot = bots.getBotFromSecret(req.query.bot);
@@ -74,7 +82,8 @@ module.exports = function (app, addon) {
             res.render('edit', {
                 title: 'Edit - Quick Bot',
                 buildSelected: true,
-                bot: bot
+                bot: bot,
+                message: message
             });
         }, function(err){
             res.redirect('/build?type=error&message=' + err);

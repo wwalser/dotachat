@@ -7,12 +7,7 @@
             {{> sidebar}}
             <section class="aui-page-panel-content">
                 <h1>Edit configuration</h1>
-                {{#if message}}<div class="aui-message aui-message-{{message.type}}">
-                    <p class="title">
-                        <strong>{{message.title}}</strong>
-                    </p>
-                    <p>{{message.message}}</p>
-                </div>{{/if}}
+                {{> message}}
                 {{> build-form}}
             </section>
         </div>

@@ -1,4 +1,4 @@
-<form action="/addBot" method="POST" id="add-bot-form" class="aui">
+<form {{#if bot}}action="/editBot"{{else}}action="/addBot"{{/if}} method="POST" id="add-bot-form" class="aui">
     <fieldset>
         <div class="field-group">
             <label for="name">Name:</label>
