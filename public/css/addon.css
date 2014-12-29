@@ -130,3 +130,7 @@ h1.hero {
 .featured-image {
     width: 450px;
 }
+
+#content .delete-button-container {
+    margin-top: 30px;
+}

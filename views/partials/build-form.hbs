@@ -29,8 +29,15 @@
     </fieldset>
     <div class="buttons-container">
         <div class="buttons">
-            <input class="button submit" value="Save" id="save" type="submit">
+            <input class="aui-button submit aui-button-primary" {{#if bot}}value="Edit bot"{{else}}value="Create bot"{{/if}} id="save" type="submit">
             <a class="cancel" href="/build">Cancel</a>
         </div>
     </div>
+    {{#if bot}}
+        <div class="buttons-container delete-button-container">
+            <div class="buttons">
+                <a href="/delete?bot={{bot.secret}}" class="aui-button delete-button">Delete bot</a>
+            </div>
+        </div>
+    {{/if}}
 </form>

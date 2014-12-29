@@ -68,6 +68,38 @@ module.exports = function (app, addon) {
         });
     });
 
+    app.post('/delete', function(req, res){
+        bots.deleteBot(req.body.secret).then(function(){
+            var message = "?type=success&message=Bot successfully deleted. I heard him say he would be back.";
+            res.redirect('/build' + message);
+        }, function(err){
+            res.redirect('/build?type=error&message=' + err);
+            console.log(err);
+        });
+    });
+
+    app.get('/delete', function(req, res){
+        var getBot;
+        var message = messages(req);
+
+        if (req.query.bot) {
+            getBot = bots.getBotFromSecret(req.query.bot);
+        } else {
+            getBot = q.reject('Failed to retrieve bot.');
+        }
+
+        getBot.then(function(bot){
+            res.render('delete', {
+                title: 'Delete - Quick Bot',
+                buildSelected: true,
+                bot: bot
+            });
+        }, function(err){
+            res.redirect('/build?type=error&message=' + err);
+            console.log(err);
+        });
+    });
+
     app.get('/bot', function(req, res){
         var getBot;
         var message = messages(req);

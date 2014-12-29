@@ -1,0 +1,23 @@
+{{!< public-layout}}
+
+{{> header}}
+<section id="content" role="main" class="ac-content">
+    <div class="aui-page-panel">
+        <div class="aui-page-panel-inner">
+            {{> sidebar}}
+            <section class="aui-page-panel-content">
+                <h1>Delete bot {{bot.name}}?</h1>
+                <p>Are you sure? This kills the bot.</p>
+                <img src="{{furl '/images/delete.png'}}">
+                <form action="/delete" method="POST" id="add-bot-form" class="aui">
+                    <input type="hidden" name="secret" id="secret" value="{{bot.secret}}">
+                    <div class="buttons-container">
+                        <div class="buttons">
+                            <input class="aui-button submit aui-button-primary" value="Yes, delete the bot" id="save" type="submit">
+                        </div>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
+</section>
