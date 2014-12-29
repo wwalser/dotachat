@@ -48,7 +48,7 @@ module.exports = function (app, addon) {
 
     app.post('/addBot', function(req, res){
         bots.addBot(req.body).then(function(bot){
-            var botQuery = '?bot=' + bot.secret;
+            var botQuery = '?bot=' + encodeURIComponent(bot.secret);
             var message = "&type=success&message=Bot successfully created.";
             res.redirect('/bot' + botQuery + message);
         }, function(err){
@@ -59,7 +59,7 @@ module.exports = function (app, addon) {
 
     app.post('/editBot', function(req, res){
         bots.editBot(req.body).then(function(bot){
-            var botQuery = '?bot=' + bot.secret;
+            var botQuery = '?bot=' + encodeURIComponent(bot.secret);
             var message = "&type=success&message=Bot successfully edited.";
             res.redirect('/bot' + botQuery + message);
         }, function(err){
