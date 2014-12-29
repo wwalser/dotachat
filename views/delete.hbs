@@ -11,11 +11,8 @@
                 <img src="{{furl '/images/delete.png'}}">
                 <form action="/delete" method="POST" id="add-bot-form" class="aui">
                     <input type="hidden" name="secret" id="secret" value="{{bot.secret}}">
-                    <div class="buttons-container">
-                        <div class="buttons">
-                            <input class="aui-button submit aui-button-primary" value="Yes, delete the bot" id="save" type="submit">
-                        </div>
-                    </div>
+                    <input class="aui-button submit aui-button-primary" value="Yes, delete the bot" id="save" type="submit">
+                    <a class="cancel" href="/bot?bot={{encodeUriComponent bot.secret}}">Cancel</a>
                 </form>
             </section>
         </div>
