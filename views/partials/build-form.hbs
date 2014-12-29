@@ -36,7 +36,7 @@
     {{#if bot}}
         <div class="buttons-container delete-button-container">
             <div class="buttons">
-                <a href="/delete?bot={{bot.secret}}" class="aui-button delete-button">Delete bot</a>
+                <a href="/delete?bot={{encodeUriComponent bot.secret}}" class="aui-button delete-button">Delete bot</a>
             </div>
         </div>
     {{/if}}

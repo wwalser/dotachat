@@ -67,6 +67,7 @@ app.use(addon.middleware());
 app.use(expiry(app, {dir: staticDir, debug: devEnv}));
 // Add an hbs helper to fingerprint static resource urls
 hbs.registerHelper('furl', function(url){ return app.locals.furl(url); });
+hbs.registerHelper('encodeUriComponent', function(thing){ return encodeURIComponent(thing); });
 // Mount the add-on's routes
 app.use(app.router);
 // Mount the static resource dir
