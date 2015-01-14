@@ -1,5 +1,5 @@
 {
-  "name": "my-hipchat-add-on",
+  "name": "quick-bots",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -24,5 +24,9 @@
   "devDependencies": {
     "fakeredis": "^0.3.0",
     "jest-cli": "^0.2.1"
+  },
+  "engines": {
+    "node": "0.10.x",
+    "npm": "2.1.x"
   }
 }
