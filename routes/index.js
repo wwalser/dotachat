@@ -1,106 +1,106 @@
+"use strict";
 var http = require('request');
 var _ = require('lodash');
-var q = require('q');
+var Q = require('Q');
 var messages = require('../lib/messages');
 
 module.exports = function (app, addon) {
   var hipchat = require('../lib/hipchat')(addon);
   var bots = require('../lib/bots')(addon);
 
-  // Root route. This route will serve the `addon.json` unless a homepage URL is
-  // specified in `addon.json`.
-  app.get('/',
-    function(req, res) {
-      // Use content-type negotiation to choose the best way to respond
-      res.format({
-        // If the request content-type is text-html, it will decide which to serve up
-        'text/html': function () {
-          res.redirect(addon.descriptor.links.homepage);
-        },
-        // This logic is here to make sure that the `addon.json` is always
-        // served up when requested by the host
-        'application/json': function () {
-          res.redirect('/atlassian-connect.json');
+    // Root route. This route will serve the `addon.json` unless a homepage URL is
+    // specified in `addon.json`.
+    app.get('/',
+        function (req, res) {
+            // Use content-type negotiation to choose the best way to respond
+            res.format({
+                // If the request content-type is text-html, it will decide which to serve up
+                'text/html': function () {
+                    res.redirect(addon.descriptor.links.homepage);
+                },
+                // This logic is here to make sure that the `addon.json` is always
+                // served up when requested by the host
+                'application/json': function () {
+                    res.redirect('/atlassian-connect.json');
+                }
+            });
         }
-      });
-    }
-  );
+    );
 
-    app.get('/index',function(req, res){
+    app.get('/index', function (req, res) {
         res.render('index', {title: 'Quick Bots'});
     });
 
-    app.get('/featured',function(req, res){
+    app.get('/featured', function (req, res) {
         res.render('featured', {
             title: 'Featured - Quick Bots',
             featuredSelected: true
         });
     });
 
-    app.get('/build', function(req, res){
+    app.get('/build', function (req, res) {
         var message = messages(req);
         res.render('build', {
             title: "Build - Quick Bot",
             buildSelected: true,
             message: message
-        })
+        });
     });
 
-    app.post('/addBot', function(req, res){
-        bots.addBot(req.body).then(function(bot){
+    app.post('/addBot', function (req, res) {
+        bots.addBot(req.body).then(function (bot) {
             var botQuery = '?bot=' + encodeURIComponent(bot.secret);
             var message = "&type=success&message=Bot successfully created.";
             res.redirect('/bot' + botQuery + message);
-        }, function(err){
+        }, function (err) {
             res.redirect('/build?type=error&message=' + err);
             console.log(err);
-        })
+        });
     });
 
-    app.post('/editBot', function(req, res){
-        bots.editBot(req.body).then(function(bot){
+    app.post('/editBot', function (req, res) {
+        bots.editBot(req.body).then(function (bot) {
             var botQuery = '?bot=' + encodeURIComponent(bot.secret);
             var message = "&type=success&message=Bot successfully edited.";
             res.redirect('/bot' + botQuery + message);
-        }, function(err){
+        }, function (err) {
             res.redirect('/build?type=error&message=' + err);
             console.log(err);
         });
     });
 
-    app.post('/delete', function(req, res){
-        bots.deleteBot(req.body.secret).then(function(){
+    app.post('/delete', function (req, res) {
+        bots.deleteBot(req.body.secret).then(function () {
             var message = "?type=success&message=Bot successfully deleted. I heard him say he would be back.";
             res.redirect('/build' + message);
-        }, function(err){
+        }, function (err) {
             res.redirect('/build?type=error&message=' + err);
             console.log(err);
         });
     });
 
-    app.get('/delete', function(req, res){
+    app.get('/delete', function (req, res) {
         var getBot;
-        var message = messages(req);
 
         if (req.query.bot) {
             getBot = bots.getBotFromSecret(req.query.bot);
         } else {
-            getBot = q.reject('Failed to retrieve bot.');
+            getBot = Q.reject('Failed to retrieve bot.');
         }
 
-        getBot.then(function(bot){
+        getBot.then(function (bot) {
             res.render('delete', {
                 title: 'Delete - Quick Bot',
                 buildSelected: true,
                 bot: bot
             });
-        }, function(err){
+        }, function (err) {
             res.redirect('/build?type=error&message=' + err);
             console.log(err);
         });
     });
 
-    app.get('/bot', function(req, res){
+    app.get('/bot', function (req, res) {
         var getBot;
         var message = messages(req);
 
@@ -110,42 +110,42 @@ module.exports = function (app, addon) {
             getBot = Q.reject('Failed to retrieve bot.');
         }
 
-        getBot.then(function(bot){
+        getBot.then(function (bot) {
             res.render('edit', {
                 title: 'Edit - Quick Bot',
                 buildSelected: true,
                 bot: bot,
                 message: message
             });
-        }, function(err){
+        }, function (err) {
             res.redirect('/build?type=error&message=' + err);
             console.log(err);
         });
     });
 
-  // This is an example route that's used by the default for the configuration page
-  app.get('/config',
-    // Authenticates the request using the JWT token in the request
-    addon.authenticate(),
-    function(req, res) {
-      // The `addon.authenticate()` middleware populates the following:
-      // * req.clientInfo: useful information about the add-on client such as the
-      //   clientKey, oauth info, and HipChat account info
-      // * req.context: contains the context data accompanying the request like
-      //   the roomId
-      res.render('config', req.context);
-    }
-  );
+    // This is an example route that's used by the default for the configuration page
+    app.get('/config',
+        // Authenticates the request using the JWT token in the request
+        addon.authenticate(),
+        function (req, res) {
+            // The `addon.authenticate()` middleware populates the following:
+            // * req.clientInfo: useful information about the add-on client such as the
+            //   clientKey, oauth info, and HipChat account info
+            // * req.context: contains the context data accompanying the request like
+            //   the roomId
+            res.render('config', req.context);
+        }
+    );
 
     // This is an example route to handle an incoming webhook
     app.post('/webhook',
         addon.authenticate(),
-        function(req, res) {
+        function (req, res) {
             res.send(200);
-            bots.getAllBots().then(function(allBots) {
-                var deferred = q.defer();
+            bots.getAllBots().then(function (allBots) {
+                var deferred = Q.defer();
                 var message = bots.tokenizeMessage(req.context.item.message.message);
-                var botToUse = _.find(allBots, function(bot){
+                var botToUse = _.find(allBots, function (bot) {
                     console.log(bot);
                     return bot.keyword === message.keyword;
                 });
@@ -158,7 +158,7 @@ module.exports = function (app, addon) {
                     url: botToUse.url,
                     json: message,
                     timeout: 20000
-                }, function(err, responseObj, body){
+                }, function (err, responseObj, body) {
                     if (err) {
                         if (err.code) {
                             console.log("Request error: ", err.code.toString());
@@ -169,10 +169,10 @@ module.exports = function (app, addon) {
                     }
                 });
                 return deferred.promise;
-            }).then(function(body){
+            }).then(function (body) {
                 console.log('body: ', body);
                 hipchat.sendMessage(req.clientInfo, req.context.item.room.id, body.message, {options: body});
-            }, function(err){
+            }, function (err) {
                 console.log(err);
                 if (err.code) {
                     hipchat.sendMessage(req.clientInfo, req.context.item.room.id, err.code.toString());
@@ -183,19 +183,19 @@ module.exports = function (app, addon) {
         }
     );
 
-  // Notify the room that the add-on was installed
-  addon.on('installed', function(clientKey, clientInfo, req){
-    hipchat.sendMessage(clientInfo, req.body.roomId, 'The ' + addon.descriptor.name + ' add-on has been installed in this room');
-  });
-
-  // Clean up clients when uninstalled
-  addon.on('uninstalled', function(id){
-    addon.settings.client.keys(id+':*', function(err, rep){
-      rep.forEach(function(k){
-        addon.logger.info('Removing key:', k);
-        addon.settings.client.del(k);
-      });
+    // Notify the room that the add-on was installed
+    addon.on('installed', function (clientKey, clientInfo, req) {
+        hipchat.sendMessage(clientInfo, req.body.roomId, 'The ' + addon.descriptor.name + ' add-on has been installed in this room');
     });
-  });
+
+    // Clean up clients when uninstalled
+    addon.on('uninstalled', function (id) {
+        addon.settings.client.keys(id + ':*', function (err, rep) {
+            rep.forEach(function (k) {
+                addon.logger.info('Removing key:', k);
+                addon.settings.client.del(k);
+            });
+        });
+    });
 
 };
