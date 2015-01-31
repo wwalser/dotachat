@@ -149,36 +149,43 @@ module.exports = function (app, addon) {
                     console.log(bot);
                     return bot.keyword === message.keyword;
                 });
+
                 if (!botToUse) {
                     console.log('Message: ', message, 'Had no representative bot to use.');
-                    return;
-                }
-                console.log('Using bot: ', botToUse);
-                http.post({
-                    url: botToUse.url,
-                    json: message,
-                    timeout: 20000
-                }, function (err, responseObj, body) {
-                    if (err) {
-                        if (err.code) {
-                            console.log("Request error: ", err.code.toString());
+                    deferred.reject({noShow: true});
+                } else {
+                    console.log('Using bot: ', botToUse);
+                    http.post({
+                        url: botToUse.url,
+                        json: message,
+                        timeout: 20000
+                    }, function (err, responseObj, body) {
+                        if (err) {
+                            if (err.code) {
+                                console.log("Request error: ", err.code.toString());
+                            }
+                            deferred.reject(err);
+                        } else {
+                            deferred.resolve(body);
                         }
-                        deferred.reject(err);
-                    } else {
-                        deferred.resolve(body);
-                    }
-                });
+                    });
+                }
                 return deferred.promise;
             }).then(function (body) {
                 console.log('body: ', body);
                 hipchat.sendMessage(req.clientInfo, req.context.item.room.id, body.message, {options: body});
+                return body;
             }, function (err) {
                 console.log(err);
-                if (err.code) {
+                if (err.noShow) {
+                    //Be quiet about it! Do nothing.
+                } else if (err.code) {
                     hipchat.sendMessage(req.clientInfo, req.context.item.room.id, err.code.toString());
                 } else {
                     hipchat.sendMessage(req.clientInfo, req.context.item.room.id, 'DB or unknown trouble.');
                 }
+                //return the error and relevant data.
+                return Q.reject(_.extend(err, {req: req}));
             });
         }
     );

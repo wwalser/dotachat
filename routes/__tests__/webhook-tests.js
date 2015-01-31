@@ -7,13 +7,15 @@ jest.mock('../../lib/email');
 jest.mock('rsvp');
 jest.mock('../../lib/hipchat');
 jest.mock('crypto');
+jest.mock('request');
 
 var Q = require('q');
 var redis = require('fakeredis');
 redis.fast = true;
+var request = require('request');
 
 //Once I use something better for logging this can go away.
-//console.log = function(){};
+console.log = function(){};
 
 var dbIdx = 0;
 var authenticateMiddleware = jest.genMockFunction();
@@ -45,7 +47,8 @@ function createRoutes(app, addon){
     return require('../index')(app, addon);
 }
 
-function createRandomBot(botsLib, numberOfBots){
+function withGeneratedBot(addon, numberOfBots){
+    var botsLib = require('../../lib/bots')(addon);
     var bots = [];
     for (var i = 0; i < numberOfBots; i++) {
         bots.push(botsLib.addBot({
@@ -59,16 +62,23 @@ function createRandomBot(botsLib, numberOfBots){
     return Q.all(bots);
 }
 
-function createFakeReqRes()
+function createFakeReqRes(message)
 {
+    if (!message) {
+        message = "/random0 foobar";
+    }
     var req = {
         context: {
             item: {
                 message: {
-                    message: "/random0 foobar"
+                    message: message
+                },
+                room: {
+                    id: 1337
                 }
             }
-        }
+        },
+        clientInfo: 'client info'
     };
     var res = {
         send: jest.genMockFunction()
@@ -88,4 +98,39 @@ describe('Webhook tests', function(){
         webhookFn.apply(this, reqRes);
         expect(reqRes[1].send.mock.calls[0][0]).toBe(200);
     });
+
+
+    pit('When no bot is installed for this keyword, no message should be sent.', function(){
+        var addon = createAddon();
+        var app = createApp();
+        createRoutes(app, addon);
+        var hipchat = require('../../lib/hipchat')(true);
+        var webhookFn = app.getRouteCallbacks('post', '/webhook')[2];
+        var reqRes = createFakeReqRes();
+
+        return webhookFn.apply(this, reqRes).then(function(){
+            expect('Not bot is installed, this promise should have failed').toBe('');
+        }, function(failure){
+            expect(failure.noShow).toBe(true);
+            expect(hipchat.sendMessage.mock.calls.length).toBe(0);
+        });
+    })
+
+    pit('Successful bot sends message', function(){
+        var addon = createAddon();
+        var app = createApp();
+        createRoutes(app, addon);
+        var hipchat = require('../../lib/hipchat')(true);
+        var webhookFn = app.getRouteCallbacks('post', '/webhook')[2];
+        var reqRes = createFakeReqRes();
+
+        return withGeneratedBot(addon, 1).then(function(){
+            return webhookFn.apply(this, reqRes)
+        }).then(function(){
+            expect(hipchat.sendMessage.mock.calls.length).toBe(1);
+            expect(hipchat.sendMessage.mock.calls[0][0]).toBe('client info');
+            expect(hipchat.sendMessage.mock.calls[0][1]).toBe(1337);
+            expect(hipchat.sendMessage.mock.calls[0][2]).toBe('super duper');
+        });
+    })
 });
