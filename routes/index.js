@@ -1,7 +1,7 @@
 "use strict";
 var http = require('request');
 var _ = require('lodash');
-var Q = require('Q');
+var Q = require('q');
 var messages = require('../lib/messages');
 
 module.exports = function (app, addon) {
@@ -142,7 +142,7 @@ module.exports = function (app, addon) {
         addon.authenticate(),
         function (req, res) {
             res.send(200);
-            bots.getAllBots().then(function (allBots) {
+            return bots.getAllBots().then(function (allBots) {
                 var deferred = Q.defer();
                 var message = bots.tokenizeMessage(req.context.item.message.message);
                 var botToUse = _.find(allBots, function (bot) {

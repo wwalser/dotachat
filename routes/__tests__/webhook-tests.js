@@ -8,12 +8,12 @@ jest.mock('rsvp');
 jest.mock('../../lib/hipchat');
 jest.mock('crypto');
 
-var Q = require('Q');
+var Q = require('q');
 var redis = require('fakeredis');
 redis.fast = true;
 
 //Once I use something better for logging this can go away.
-console.log = function(){};
+//console.log = function(){};
 
 var dbIdx = 0;
 var authenticateMiddleware = jest.genMockFunction();
