@@ -12,7 +12,6 @@ jest.mock('request');
 var Q = require('q');
 var redis = require('fakeredis');
 redis.fast = true;
-var request = require('request');
 
 //Once I use something better for logging this can go away.
 console.log = function(){};
@@ -82,7 +81,7 @@ function createFakeReqRes(message)
     };
     var res = {
         send: jest.genMockFunction()
-    }
+    };
 
     return [req, res];
 }
@@ -114,7 +113,7 @@ describe('Webhook tests', function(){
             expect(failure.noShow).toBe(true);
             expect(hipchat.sendMessage.mock.calls.length).toBe(0);
         });
-    })
+    });
 
     pit('Successful bot sends message', function(){
         var addon = createAddon();
@@ -125,12 +124,12 @@ describe('Webhook tests', function(){
         var reqRes = createFakeReqRes();
 
         return withGeneratedBot(addon, 1).then(function(){
-            return webhookFn.apply(this, reqRes)
+            return webhookFn.apply(this, reqRes);
         }).then(function(){
             expect(hipchat.sendMessage.mock.calls.length).toBe(1);
             expect(hipchat.sendMessage.mock.calls[0][0]).toBe('client info');
             expect(hipchat.sendMessage.mock.calls[0][1]).toBe(1337);
             expect(hipchat.sendMessage.mock.calls[0][2]).toBe('super duper');
         });
-    })
+    });
 });
