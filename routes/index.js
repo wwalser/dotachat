@@ -47,16 +47,16 @@ module.exports = function (app, addon) {
         });
     });
 
-    app.post('/addBot', function (req, res) {
-        bots.addBot(req.body).then(function (bot) {
-            var botQuery = '?bot=' + encodeURIComponent(bot.secret);
-            var message = "&type=success&message=Bot successfully created.";
-            res.redirect('/bot' + botQuery + message);
-        }, function (err) {
-            res.redirect('/build?type=error&message=' + err);
-            console.log(err);
-        });
-    });
+//    app.post('/addBot', function (req, res) {
+//        bots.addBot(req.body).then(function (bot) {
+//            var botQuery = '?bot=' + encodeURIComponent(bot.secret);
+//            var message = "&type=success&message=Bot successfully created.";
+//            res.redirect('/bot' + botQuery + message);
+//        }, function (err) {
+//            res.redirect('/build?type=error&message=' + err);
+//            console.log(err);
+//        });
+//    });
 
     app.post('/editBot', function (req, res) {
         bots.editBot(req.body).then(function (bot) {
