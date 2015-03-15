@@ -134,3 +134,26 @@ h1.hero {
 #content .delete-button-container {
     margin-top: 30px;
 }
+
+/* bot config page */
+.config-bot-list {
+    margin: 10px 0;
+    padding: 0;
+}
+.config-bot:hover {
+    background: #ebf2f9;
+}
+.config-bot {
+    list-style: none;
+    display: table;
+    border-spacing: 5px;
+}
+.config-bot .config-bot-enable {
+    vertical-align: middle;
+}
+.config-bot-header h4 {
+    display: inline;
+}
+.config-bot-header span {
+    padding-left: 15px;
+}

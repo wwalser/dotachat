@@ -1,6 +1,20 @@
 {{!< plugins}}
 <div class="aui-group">
     <div class="aui-item">
-        <h3>Here's your config page. Now get to work!</h3>
+        <h3>Quick Bots Configuration</h3>
+        <p>Select which bots to enable:</p>
+        <ul class="config-bot-list">
+            {{#each bots}}
+                <li class="config-bot aui-group">
+                    <div class="config-bot-wrapper aui-item">
+                        <div class="config-bot-header"><h4>{{this.name}}</h4><span>/{{this.keyword}}</span></div>
+                        <span>{{this.homepage}}</span>
+                    </div>
+                    <div class="config-bot-enable aui-item">
+                        <button class="aui-button">+ Enable</button>
+                    </div>
+                </li>
+            {{/each}}
+        </ul>
     </div>
 </div>

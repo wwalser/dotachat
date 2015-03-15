@@ -47,16 +47,16 @@ module.exports = function (app, addon) {
         });
     });
 
-//    app.post('/addBot', function (req, res) {
-//        bots.addBot(req.body).then(function (bot) {
-//            var botQuery = '?bot=' + encodeURIComponent(bot.secret);
-//            var message = "&type=success&message=Bot successfully created.";
-//            res.redirect('/bot' + botQuery + message);
-//        }, function (err) {
-//            res.redirect('/build?type=error&message=' + err);
-//            console.log(err);
-//        });
-//    });
+    app.post('/addBot', function (req, res) {
+        bots.addBot(req.body).then(function (bot) {
+            var botQuery = '?bot=' + encodeURIComponent(bot.secret);
+            var message = "&type=success&message=Bot successfully created.";
+            res.redirect('/bot' + botQuery + message);
+        }, function (err) {
+            res.redirect('/build?type=error&message=' + err);
+            console.log(err);
+        });
+    });
 
     app.post('/editBot', function (req, res) {
         bots.editBot(req.body).then(function (bot) {
@@ -126,14 +126,17 @@ module.exports = function (app, addon) {
     // This is an example route that's used by the default for the configuration page
     app.get('/config',
         // Authenticates the request using the JWT token in the request
-        addon.authenticate(),
+        //addon.authenticate(),
         function (req, res) {
             // The `addon.authenticate()` middleware populates the following:
             // * req.clientInfo: useful information about the add-on client such as the
             //   clientKey, oauth info, and HipChat account info
             // * req.context: contains the context data accompanying the request like
             //   the roomId
-            res.render('config', req.context);
+            bots.getAllBots().then(function(allBots){
+                var botList = allBots;
+                res.render('config', {context: req.context, bots: botList});
+            });
         }
     );
 
