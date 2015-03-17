@@ -195,6 +195,11 @@ module.exports = function (app, addon) {
 
     // Notify the room that the add-on was installed
     addon.on('installed', function (clientKey, clientInfo, req) {
+        bots.installDefaultBots(clientKey).then(function(){
+            
+        }, function(){
+            console.log('failed to install default bots', clientKey);
+        });
         hipchat.sendMessage(clientInfo, req.body.roomId, 'The ' + addon.descriptor.name + ' add-on has been installed in this room');
     });
 
