@@ -22,7 +22,7 @@
   },
   "devDependencies": {
     "fakeredis": "^0.3.0",
-    "jest-cli": "^0.2.2"
+    "jest-cli": "^0.4.0"
   },
   "engines": {
     "node": "0.10.x",
