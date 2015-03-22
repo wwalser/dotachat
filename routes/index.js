@@ -133,10 +133,25 @@ module.exports = function (app, addon) {
             //   clientKey, oauth info, and HipChat account info
             // * req.context: contains the context data accompanying the request like
             //   the roomId
-            bots.getAllBots().then(function(allBots){
-                var botList = allBots;
-                res.render('config', {context: req.context, bots: botList});
-            });
+            var clientKey = 1234; // req.clientInfo.clientKey
+            Q.all([bots.getAllBots(), bots.getInstalledBots(clientKey)])
+                .spread(function(allBots, installedBotIds){
+                    _.each(allBots, function(bot){
+                        bot.installed = _.contains(installedBotIds, bot.id);
+                    });
+                    var botList = _.sortBy(allBots, function(bot){
+                        console.log('sorting', bot);
+                        var value = 2;
+                        if (bot.featured === "true") {
+                            value = 1;
+                        }
+                        if (bot.installed) {
+                            value = 0;
+                        }
+                        return value;
+                    });
+                    res.render('config', {context: req.context, bots: botList});
+                })
         }
     );
 
@@ -195,10 +210,10 @@ module.exports = function (app, addon) {
 
     // Notify the room that the add-on was installed
     addon.on('installed', function (clientKey, clientInfo, req) {
-        bots.installDefaultBots(clientKey).then(function(){
-            
+        bots.installFeaturedBots(clientKey).then(function(){
+            console.log('QuickBots installed and default bots auto-enabled.', clientKey);
         }, function(){
-            console.log('failed to install default bots', clientKey);
+            console.log('Failed to install default bots', clientKey);
         });
         hipchat.sendMessage(clientInfo, req.body.roomId, 'The ' + addon.descriptor.name + ' add-on has been installed in this room');
     });
