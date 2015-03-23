@@ -1,7 +1,7 @@
 {
     "key": "quick-bots",
     "name": "Quick Bots",
-    "description": "Some quick little bots I threw together.",
+    "description": "Faster chat bot development for HipChat",
     "vendor": {
         "name": "Wesley Walser",
         "url": "https://www.atlassian.com"
