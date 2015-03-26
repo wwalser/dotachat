@@ -126,14 +126,14 @@ module.exports = function (app, addon) {
     // This is an example route that's used by the default for the configuration page
     app.get('/config',
         // Authenticates the request using the JWT token in the request
-        addon.authenticate(),
+        //addon.authenticate(),
         function (req, res) {
             // The `addon.authenticate()` middleware populates the following:
             // * req.clientInfo: useful information about the add-on client such as the
             //   clientKey, oauth info, and HipChat account info
             // * req.context: contains the context data accompanying the request like
             //   the roomId
-            var clientKey = req.clientInfo.clientKey;
+            var clientKey = 1234; //req.clientInfo.clientKey;
             Q.all([bots.getAllBots(), bots.getInstalledBots(clientKey)])
                 .spread(function(allBots, installedBotIds){
                     _.each(allBots, function(bot){
@@ -149,6 +149,7 @@ module.exports = function (app, addon) {
                         }
                         return value;
                     });
+
                     res.render('config', {context: req.context, bots: botList});
                 })
         }
@@ -204,6 +205,13 @@ module.exports = function (app, addon) {
                 //return the error and relevant data.
                 return Q.reject(_.extend(err, {req: req}));
             });
+        }
+    );
+
+    app.put('/client-installed-bots',
+        //addon.authenticate(),
+        function(req, res){
+            console.log('client-installed-bots', res.signed_request);
         }
     );
 

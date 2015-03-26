@@ -148,6 +148,12 @@ h1.hero {
     display: table;
     border-spacing: 5px;
 }
+.config-bot button.enabled:before {
+    content: "+ Disable";
+}
+.config-bot button.disabled:before {
+    content: "+ Enable";
+}
 .config-bot .config-bot-enable {
     vertical-align: middle;
 }
