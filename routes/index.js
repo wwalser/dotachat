@@ -186,10 +186,14 @@ module.exports = function (app, addon) {
         addon.authenticate(),
         function (req, res) {
             res.send(200);
-            return bots.getAllBots().then(function (allBots) {
+            var clientKey = req.clientInfo.clientKey;
+            Q.all([bots.getAllBots(), bots.getInstalledBots(clientKey)]).spread(function(allBots, installedBotIds){
+                var installedBots = _.filter(allBots, function(bot){
+                    return _.contains(installedBotIds, bot.id);
+                });
                 var deferred = Q.defer();
                 var message = bots.tokenizeMessage(req.context.item.message.message);
-                var botToUse = _.find(allBots, function (bot) {
+                var botToUse = _.find(installedBots, function (bot) {
                     console.log(bot);
                     return bot.keyword === message.keyword;
                 });
