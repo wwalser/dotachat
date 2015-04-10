@@ -28,7 +28,7 @@ function createAddon(){
     };
 }
 function createApp(){
-    var routeList = {get: {}, post: {}};
+    var routeList = {get: {}, post: {}, put: {}, delete: {}};
     var methodCreator = function(verb){
         return function(routeName){
             routeList[verb][routeName] = arguments;
@@ -37,6 +37,8 @@ function createApp(){
     return {
         get: methodCreator('get'),
         post: methodCreator('post'),
+        put: methodCreator('put'),
+        delete: methodCreator('delete'),
         getRouteCallbacks: function(verb, routeName){
             return routeList[verb][routeName];
         }

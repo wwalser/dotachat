@@ -11,7 +11,7 @@
                         <span>{{this.homepage}}</span>
                     </div>
                     <div class="config-bot-enable aui-item">
-                        <button class="aui-button {{#if this.installed}}enabled{{else}}disabled{{/if}}" data-bot="{{this.id}}" data-enabled="true"></button>
+                        <button class="aui-button {{#if this.installed}}enabled{{else}}disabled{{/if}}" data-bot="{{this.id}}" data-enabled="{{#if this.installed}}true{{else}}false{{/if}}"></button>
                     </div>
                 </li>
             {{/each}}
