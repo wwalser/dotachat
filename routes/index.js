@@ -167,18 +167,18 @@ module.exports = function (app, addon) {
             operation = bots.uninstallBots(clientKey, [botToChange]);
         }
         operation.then(function(){
-            res.send('204 not possible because of bug in reqwest');
+            res.status(204).send();
         });
     }
 
     app.put('/client-installed-bots',
-            addon.authenticate(),
-            toggleBotInstalledState
+        addon.authenticate(),
+        toggleBotInstalledState
     );
 
     app.delete('/client-installed-bots',
-            addon.authenticate(),
-            toggleBotInstalledState
+        addon.authenticate(),
+        toggleBotInstalledState
     );
 
     // This is an example route to handle an incoming webhook
@@ -187,7 +187,7 @@ module.exports = function (app, addon) {
         function (req, res) {
             res.send(200);
             var clientKey = req.clientInfo.clientKey;
-            Q.all([bots.getAllBots(), bots.getInstalledBots(clientKey)]).spread(function(allBots, installedBotIds){
+            return Q.all([bots.getAllBots(), bots.getInstalledBots(clientKey)]).spread(function(allBots, installedBotIds){
                 var installedBots = _.filter(allBots, function(bot){
                     return _.contains(installedBotIds, bot.id);
                 });

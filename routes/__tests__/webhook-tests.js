@@ -11,6 +11,7 @@ jest.mock('request');
 
 var Q = require('q');
 var redis = require('fakeredis');
+var _ = require('underscore');
 redis.fast = true;
 
 //Once I use something better for logging this can go away.
@@ -18,6 +19,7 @@ console.log = function(){};
 
 var dbIdx = 0;
 var authenticateMiddleware = jest.genMockFunction();
+var testClientKey = 1234;
 function createAddon(){
     return {
         settings: {
@@ -60,7 +62,11 @@ function withGeneratedBot(addon, numberOfBots){
             email: 'wwalser@atlassian.com'
         }));
     }
-    return Q.all(bots);
+    return Q.all(bots).then(function(generatedBots){
+        //install the generated bots
+        var botIds = _.pluck(generatedBots, 'id');
+        return botsLib.installBots(testClientKey, botIds);
+    });
 }
 
 function createFakeReqRes(message)
@@ -79,7 +85,7 @@ function createFakeReqRes(message)
                 }
             }
         },
-        clientInfo: 'client info'
+        clientInfo: {clientKey: testClientKey}
     };
     var res = {
         send: jest.genMockFunction()
@@ -129,7 +135,7 @@ describe('Webhook tests', function(){
             return webhookFn.apply(this, reqRes);
         }).then(function(){
             expect(hipchat.sendMessage.mock.calls.length).toBe(1);
-            expect(hipchat.sendMessage.mock.calls[0][0]).toBe('client info');
+            expect(hipchat.sendMessage.mock.calls[0][0]['clientKey']).toBe(testClientKey);
             expect(hipchat.sendMessage.mock.calls[0][1]).toBe(1337);
             expect(hipchat.sendMessage.mock.calls[0][2]).toBe('super duper');
         });

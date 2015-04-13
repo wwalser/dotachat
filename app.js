@@ -1,11 +1,7 @@
-// This is the entry point for your add-on, creating and configuring
-// your add-on HTTP server
+//Quick-bots, the fun starts here:
 
-// [Express](http://expressjs.com/) is your friend -- it's the underlying
-// web framework that `atlassian-connect-express` uses
 var express = require('express');
-// You need to load `atlassian-connect-express` to use her godly powers
-var ac = require('atlassian-connect-express');
+var ac = require('./lib/ac-plus');
 process.env.PWD = process.env.PWD || process.cwd(); // Fix expiry on Windows :(
 // Static expiry middleware to help serve static resources efficiently
 var expiry = require('static-expiry');
@@ -30,12 +26,12 @@ var partialsDir = __dirname + '/views/partials';
 var routes = require('./routes');
 // Bootstrap Express
 var app = express();
+// Declares the environment to use in `config.js`
+var devEnv = app.get('env') == 'development';
 // Bootstrap the `atlassian-connect-express` library
 var addon = ac(app);
 // You can set this in `config.js`
 var port = addon.config.port();
-// Declares the environment to use in `config.js`
-var devEnv = app.get('env') == 'development';
 
 // Load the HipChat AC compat layer
 var hipchat = require('atlassian-connect-express-hipchat')(addon, app);
@@ -73,8 +69,11 @@ app.use(app.router);
 // Mount the static resource dir
 app.use(express.static(staticDir));
 
-// Show nicer errors when in dev mode
-if (devEnv) app.use(express.errorHandler());
+// Do nice things for dev mode
+if (devEnv) {
+    app.use(express.errorHandler());
+    ac.devMode(addon);
+}
 
 // Wire up your routes using the express and `atlassian-connect-express` objects
 routes(app, addon);
@@ -83,6 +82,4 @@ routes(app, addon);
 http.createServer(app).listen(port, function(){
   console.log()
   console.log('Add-on server running at '+ (addon.config.localBaseUrl()||('http://' + (os.hostname()) + ':' + port)));
-  // Enables auto registration/de-registration of add-ons into a host in dev mode
-  if (devEnv) addon.register();
 });

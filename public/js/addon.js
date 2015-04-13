@@ -9,6 +9,7 @@ document.addEventListener("click", function(event){
         reqwest({
             url: 'client-installed-bots?signed_request=' + ACPT,
             method: enabled ? 'delete' : 'put',
+            type: 'json',
             data: { botId: button.attributes['data-bot'].value },
             success: function (resp) {
                 button.classList.toggle('loading');
