@@ -151,7 +151,7 @@ module.exports = function (app, addon) {
                     });
 
                     res.render('config', {context: req.context, bots: botList});
-                })
+                });
         }
     );
 
@@ -189,7 +189,7 @@ module.exports = function (app, addon) {
             var clientKey = req.clientInfo.clientKey;
             return bots.getInstalledBots(clientKey).then(bots.getBotsFromIds).then(function(installedBots){
                 var deferred = Q.defer();
-                var message = bots.tokenizeMessage(req.context.item.message.message);
+                var message = hipchat.tokenizeMessage(req.context.item.message.message);
                 var botToUse = _.find(installedBots, function (bot) {
                     console.log(bot);
                     return bot.keyword === message.keyword;
@@ -202,7 +202,7 @@ module.exports = function (app, addon) {
                     console.log('Using bot: ', botToUse);
                     http.post({
                         url: botToUse.url,
-                        json: message,
+                        json: req.context.item,
                         timeout: 20000
                     }, function (err, responseObj, body) {
                         if (err) {

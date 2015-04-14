@@ -145,6 +145,26 @@ describe('Webhook tests', function(){
         });
     });
 
+    pit("When message doesn't match existing and installed bot.", function(){
+        var addon = createAddon();
+        var app = createApp();
+        createRoutes(app, addon);
+        var hipchat = require('../../lib/hipchat')(true);
+        var webhookFn = app.getRouteCallbacks('post', '/webhook')[2];
+        var reqRes = createFakeReqRes("/doestexist foobar");
+
+        return withGeneratedBot(addon, 1).then(function(bots){
+            return installGeneratedBots(addon, bots);
+        }).then(function(){
+            return webhookFn.apply(this, reqRes);
+        }).then(function(){
+            expect('Not bot is installed, this promise should have failed').toBe('');
+        }, function(failure){
+            expect(failure.noShow).toBe(true);
+            expect(hipchat.sendMessage.mock.calls.length).toBe(0);
+        });
+    });
+
     pit('Successful bot sends message', function(){
         var addon = createAddon();
         var app = createApp();
