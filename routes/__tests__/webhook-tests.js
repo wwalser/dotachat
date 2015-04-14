@@ -62,11 +62,13 @@ function withGeneratedBot(addon, numberOfBots){
             email: 'wwalser@atlassian.com'
         }));
     }
-    return Q.all(bots).then(function(generatedBots){
-        //install the generated bots
-        var botIds = _.pluck(generatedBots, 'id');
-        return botsLib.installBots(testClientKey, botIds);
-    });
+    return Q.all(bots);
+}
+
+function installGeneratedBots(addon, generatedBots) {
+    var botsLib = require('../../lib/bots')(addon);
+    var botIds = _.pluck(generatedBots, 'id');
+    return botsLib.installBots(testClientKey, botIds);
 }
 
 function createFakeReqRes(message)
@@ -107,7 +109,7 @@ describe('Webhook tests', function(){
     });
 
 
-    pit('When no bot is installed for this keyword, no message should be sent.', function(){
+    pit('When no bot exists for this keyword, no message should be sent.', function(){
         var addon = createAddon();
         var app = createApp();
         createRoutes(app, addon);
@@ -115,7 +117,27 @@ describe('Webhook tests', function(){
         var webhookFn = app.getRouteCallbacks('post', '/webhook')[2];
         var reqRes = createFakeReqRes();
 
+        //Make the request without generating any bots
         return webhookFn.apply(this, reqRes).then(function(){
+            expect('Not bot is installed, this promise should have failed').toBe('');
+        }, function(failure){
+            expect(failure.noShow).toBe(true);
+            expect(hipchat.sendMessage.mock.calls.length).toBe(0);
+        });
+    });
+
+    pit('When bot not installed for this keyword, no message should be sent.', function(){
+        var addon = createAddon();
+        var app = createApp();
+        createRoutes(app, addon);
+        var hipchat = require('../../lib/hipchat')(true);
+        var webhookFn = app.getRouteCallbacks('post', '/webhook')[2];
+        var reqRes = createFakeReqRes();
+
+        //generate a bot that matches the request but don't install it
+        return withGeneratedBot(addon, 1).then(function(){
+            return webhookFn.apply(this, reqRes);
+        }).then(function(){
             expect('Not bot is installed, this promise should have failed').toBe('');
         }, function(failure){
             expect(failure.noShow).toBe(true);
@@ -131,11 +153,13 @@ describe('Webhook tests', function(){
         var webhookFn = app.getRouteCallbacks('post', '/webhook')[2];
         var reqRes = createFakeReqRes();
 
-        return withGeneratedBot(addon, 1).then(function(){
+        return withGeneratedBot(addon, 1).then(function(bots){
+            return installGeneratedBots(addon, bots);
+        }).then(function(){
             return webhookFn.apply(this, reqRes);
         }).then(function(){
             expect(hipchat.sendMessage.mock.calls.length).toBe(1);
-            expect(hipchat.sendMessage.mock.calls[0][0]['clientKey']).toBe(testClientKey);
+            expect(hipchat.sendMessage.mock.calls[0][0].clientKey).toBe(testClientKey);
             expect(hipchat.sendMessage.mock.calls[0][1]).toBe(1337);
             expect(hipchat.sendMessage.mock.calls[0][2]).toBe('super duper');
         });

@@ -187,10 +187,7 @@ module.exports = function (app, addon) {
         function (req, res) {
             res.send(200);
             var clientKey = req.clientInfo.clientKey;
-            return Q.all([bots.getAllBots(), bots.getInstalledBots(clientKey)]).spread(function(allBots, installedBotIds){
-                var installedBots = _.filter(allBots, function(bot){
-                    return _.contains(installedBotIds, bot.id);
-                });
+            return bots.getInstalledBots(clientKey).then(bots.getBotsFromIds).then(function(installedBots){
                 var deferred = Q.defer();
                 var message = bots.tokenizeMessage(req.context.item.message.message);
                 var botToUse = _.find(installedBots, function (bot) {
