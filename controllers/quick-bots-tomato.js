@@ -1,7 +1,7 @@
 var tomato = require('../lib/tomato');
 
 module.exports = function(request, response) {
-    var message = request.body.message.message || request.body.text;
+    var message = request.body.item.message.message || request.body.text;
 
     tomato(message).then(function(messageObject){
         try {

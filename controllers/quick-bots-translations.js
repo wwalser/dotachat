@@ -1,7 +1,7 @@
 var translations = require('../lib/translations');
 
 module.exports = function(request, response) {
-    var message = request.body.message.message || request.body.text;
+    var message = request.body.item.message.message || request.body.text;
     console.log("Translating: " + message);
 
     translations(message).then(function(messageObject){

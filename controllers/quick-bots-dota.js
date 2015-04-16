@@ -4,7 +4,7 @@ var quickBots = require('../lib/quick-bots');
 
 module.exports = function(request, response) {
     var templateRenderer = Q.nbind(response.render, response);
-    var message = request.body.message.message;
+    var message = request.body.item.message.message;
 
     quickBots.timed(dota2(message, templateRenderer), 'The Steam API is slow right now.').then(function(messageObject){
         try {
