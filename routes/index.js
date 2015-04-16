@@ -189,20 +189,21 @@ module.exports = function (app, addon) {
             var clientKey = req.clientInfo.clientKey;
             return bots.getInstalledBots(clientKey).then(bots.getBotsFromIds).then(function(installedBots){
                 var deferred = Q.defer();
-                var message = hipchat.tokenizeMessage(req.context.item.message.message);
+                var tokenizedMessage = hipchat.tokenizeMessage(req.context.item.message.message);
+                var cleanedData = hipchat.cleanData(req.context);
                 var botToUse = _.find(installedBots, function (bot) {
                     console.log(bot);
-                    return bot.keyword === message.keyword;
+                    return bot.keyword === tokenizedMessage.keyword;
                 });
 
                 if (!botToUse) {
-                    console.log('Message: ', message, 'Had no representative bot to use.');
+                    console.log('Message: ', tokenizedMessage, 'Had no representative bot to use.');
                     deferred.reject({noShow: true});
                 } else {
                     console.log('Using bot: ', botToUse);
                     http.post({
                         url: botToUse.url,
-                        json: req.context.item,
+                        json: cleanedData,
                         timeout: 20000
                     }, function (err, responseObj, body) {
                         if (err) {
