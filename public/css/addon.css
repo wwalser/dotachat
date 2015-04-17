@@ -135,6 +135,21 @@ h1.hero {
     margin-top: 30px;
 }
 
+/* build page */
+.code-example {
+    border: 1px solid #CCC;
+    border-radius: 5px;
+    background: none repeat scroll 0% 0% #F5F5F5;
+    font-size: 12px;
+    line-height: 150%;
+    height: auto;
+    display: inline-block;
+    margin: 0px;
+    padding: 0.5em;
+    box-sizing: border-box;
+}
+
+
 /* bot config page */
 .config-bot-list {
     margin: 10px 0;
