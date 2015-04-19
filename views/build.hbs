@@ -16,7 +16,7 @@
                 <p><strong>Faster development:</strong> Quick Bots was developed in order to eliminate the need to build a full <a href="https://developer.atlassian.com/static/connect/docs/latest/index.html">Atlassian Connect</a> plugin for simple integrations. Quick Bots allows developers to quickly create slash command integrations but removes the need to bootstrap full Connect plugins. It also allows users of these integrations a single simple install process. Installing Quick Bots gives access to many different integrations all of which can be easily configured.</p>
                 <p><strong>Sharable integrations:</strong> Developing HipChat bots without Quick Bots is fairly straight forward. The <a href="https://blog.hipchat.com/2015/02/11/build-your-own-integration-with-hipchat/">Build Your Own</a> integration in HipChat. However, because these integrations are configured per-room, sharing them is painful. Quick Bots is designed with this consideration in mind. The request payload that Quick Bots delivers the exactly the same as the built in BYO integrations.</p>
                 <h2>Show me the goods!</h2>
-                <p>We will POST to your URL some JSON data that looks like the snippet below. For more
+                <p>Quick Bots will POST to the bot URL. The http post will contain a JSON encoded body that looks like the snippet below. For more
                     details, please refer to the <a href="https://www.hipchat.com/docs/apiv2/webhooks#room_message">HipChat webhook documentation</a>.</p>
 <pre class="code-example" lang="json"><code>{
     event: 'room_message',
