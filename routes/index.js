@@ -157,17 +157,24 @@ module.exports = function (app, addon) {
 
     function toggleBotInstalledState(req, res){
         var install = req.method === "PUT";
-        var clientKey = req.clientInfo.clientKey;
+        var clientInfo = req.clientInfo;
+        var clientKey = clientInfo.clientKey;
+        var roomId = clientInfo.roomId;
         var botToChange = req.body.botId;
-        var operation;
+        var operation, message;
         console.log('client-installed-bots', clientKey, botToChange, install);
         if (install) {
             operation = bots.installBots(clientKey, [botToChange]);
+            message = " has been installed into this room.";
         } else {
             operation = bots.uninstallBots(clientKey, [botToChange]);
+            message = " has been uninstalled from this room.";
         }
         operation.then(function(){
             res.status(204).send();
+	    bots.getBotFromId(botToChange).then(function(bot){
+                hipchat.sendMessage(clientInfo, roomId, bot.name + message);
+	    });
         });
     }
 
@@ -192,7 +199,6 @@ module.exports = function (app, addon) {
                 var tokenizedMessage = hipchat.tokenizeMessage(req.context.item.message.message);
                 var cleanedData = hipchat.cleanData(req.context);
                 var botToUse = _.find(installedBots, function (bot) {
-                    console.log(bot);
                     return bot.keyword === tokenizedMessage.keyword;
                 });
 
