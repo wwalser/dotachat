@@ -224,7 +224,7 @@ module.exports = {
     "219" :  "http://media.steampowered.com/apps/dota2/images/items/mystery_missile_eg.png",
     "220" : "http://media.steampowered.com/apps/dota2/images/items/travel_boots_2_eg.png",
     "221" : "http://media.steampowered.com/apps/dota2/images/items/mystery_vacuum_eg.png",
-    "226" : "http://media.steampowered.com/apps/dota2/images/items/halloween_rapier_eg.png",
+    "226" : "http://media.steampowered.com/apps/dota2/images/items/lotus_orb_eg.png",
     "228" : "http://media.steampowered.com/apps/dota2/images/items/greevil_whistle_eg.png",
     "235" : "http://media.steampowered.com/apps/dota2/images/items/octarine_core_eg.png",
     "227" : "http://media.steampowered.com/apps/dota2/images/items/present_eg.png",
