@@ -243,6 +243,7 @@ module.exports = {
 	"242" : "http://media.steampowered.com/apps/dota2/images/items/crimson_guard_eg.png",
 	"243" : "http://media.steampowered.com/apps/dota2/images/items/crimson_guard_eg.png",
 	"244" : "http://media.steampowered.com/apps/dota2/images/items/unknown_eg.png",
+	"247" : "http://media.steampowered.com/apps/dota2/images/items/moon_shard_eg.png",
 	"249" : "http://media.steampowered.com/apps/dota2/images/items/silver_edge_eg.png",
     "254" : "http://media.steampowered.com/apps/dota2/images/items/glimmer_cape_eg.png"
 };
