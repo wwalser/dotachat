@@ -218,9 +218,9 @@ module.exports = {
     "213" : "http://media.steampowered.com/apps/dota2/images/items/recipe_tranquil_boots_eg.png",
     "214" : "http://media.steampowered.com/apps/dota2/images/items/tranquil_boots_eg.png",
     "215" : "http://media.steampowered.com/apps/dota2/images/items/shadow_amulet_eg.png",
-	"216" :  "http://media.steampowered.com/apps/dota2/images/items/halloween_candy_corn_eg.png",
+	"216" :  "http://media.steampowered.com/apps/dota2/images/items/enchanted_mango_eg.png",
     "217" :  "http://media.steampowered.com/apps/dota2/images/items/mystery_hook_eg.png",
-    "218" :  "http://media.steampowered.com/apps/dota2/images/items/mystery_arrow_eg.png",
+    "218" :  "http://media.steampowered.com/apps/dota2/images/items/ward_dispenser_eg.png",
     "219" :  "http://media.steampowered.com/apps/dota2/images/items/mystery_missile_eg.png",
     "220" : "http://media.steampowered.com/apps/dota2/images/items/travel_boots_2_eg.png",
     "221" : "http://media.steampowered.com/apps/dota2/images/items/mystery_vacuum_eg.png",
@@ -230,7 +230,7 @@ module.exports = {
     "227" : "http://media.steampowered.com/apps/dota2/images/items/present_eg.png",
     "229" : "http://media.steampowered.com/apps/dota2/images/items/solar_crest_eg.png",
     "230" : "http://media.steampowered.com/apps/dota2/images/items/winter_skates_eg.png",
-    "231" : "http://media.steampowered.com/apps/dota2/images/items/winter_cake_eg.png",
+    "231" : "http://media.steampowered.com/apps/dota2/images/items/guardian_greaves_eg.png",
     "232" : "http://media.steampowered.com/apps/dota2/images/items/winter_cookie_eg.png",
     "233" : "http://media.steampowered.com/apps/dota2/images/items/winter_coco_eg.png",
     "234" : "http://media.steampowered.com/apps/dota2/images/items/winter_ham_eg.png",
@@ -243,5 +243,6 @@ module.exports = {
 	"242" : "http://media.steampowered.com/apps/dota2/images/items/crimson_guard_eg.png",
 	"243" : "http://media.steampowered.com/apps/dota2/images/items/crimson_guard_eg.png",
 	"244" : "http://media.steampowered.com/apps/dota2/images/items/unknown_eg.png",
-	"249" : "http://media.steampowered.com/apps/dota2/images/items/silver_edge_eg.png"
+	"249" : "http://media.steampowered.com/apps/dota2/images/items/silver_edge_eg.png",
+    "254" : "http://media.steampowered.com/apps/dota2/images/items/glimmer_cape_eg.png"
 };
