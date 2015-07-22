@@ -1,8 +1,13 @@
 {
   "name": "dotachat",
-  "version": "0.0.1",
+  "version": "0.1.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/wwalser/dotachat.git"
+  },
   "scripts": {
-    "start": "node app.js"
+    "start": "./node_modules/.bin/babel-node app.js"
   },
   "dependencies": {
     "bignumber.js": "1.0.1",
@@ -11,7 +16,8 @@
     "q": "^1.1.0",
     "redis": "^0.12.1",
     "request": "2.30.0",
-    "xml2js": "0.4.4"
+    "xml2js": "0.4.4",
+    "babel": "5.8.3"
   },
   "engines": {
     "node": "0.10.x",

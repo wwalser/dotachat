@@ -3,6 +3,7 @@ var conf = require('../config.json');
 var pkg = require('../package.json');
 
 var ApiClient = function (appId, options) {
+    var $;
     var ApiClient = $ = function (apiKey) {
         this.callbacks = [];
 
