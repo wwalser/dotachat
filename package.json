@@ -8,7 +8,7 @@
   },
   "scripts": {
     "start": "./node_modules/.bin/babel-node app.js",
-    "lint": "./node_modules/.bin/eslint lib/dota2"
+    "lint": "./node_modules/.bin/eslint lib/"
   },
   "dependencies": {
     "bignumber.js": "1.0.1",
