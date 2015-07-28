@@ -65,6 +65,7 @@ module.exports = exports = {
 					var obj = JSON.parse(data);
 					next(null, obj, null);
 				} catch (e) {
+          console.log('ERROR RESPONSE FROM STEAM API: ', data);
 					next("Steam API is returning strange stuff, it's probably down.", {}, null);
 				}
             });
