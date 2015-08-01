@@ -18,7 +18,8 @@
     "redis": "^0.12.1",
     "request": "2.30.0",
     "xml2js": "0.4.4",
-    "babel": "5.8.3"
+    "babel": "5.8.3",
+    "ioredis": "^1.7.1"
   },
   "engines": {
     "node": "0.10.x",
@@ -26,7 +27,6 @@
   },
   "devDependencies": {
     "babel-eslint": "^4.0.5",
-    "eslint": "^0.24.1",
-    "ioredis": "^1.7.1"
+    "eslint": "^0.24.1"
   }
 }
