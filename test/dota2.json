@@ -1,1 +1,9 @@
-{"item": {"message": {"message": "buff wes"}, "room": {"id":"test"}}}
+{
+  "item": {
+    "message": {
+      "message": "buff wes",
+      "from": {"id": 83988, "mention_name": "Wes"}
+    },
+    "room": {"id":"test"}
+  }
+}
