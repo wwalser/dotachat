@@ -1,7 +1,7 @@
 {
   "item": {
     "message": {
-      "message": "dota",
+      "message": "dota add 28548020",
       "from": {"id": 83988, "mention_name": "Wes"}
     },
     "room": {"id":"test"}
