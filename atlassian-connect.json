@@ -25,7 +25,7 @@
         },
         "webhook": {
             "url": "{{localBaseUrl}}/webhook",
-            "pattern": "^/\\w*\\s.*",
+            "pattern": "^/\\w*",
             "event": "room_message",
             "name": "quick bots webhook"
         }
